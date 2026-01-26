@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.currentRecomposeScope
 import androidx.compose.runtime.remember
+import com.dreifus.template.uikit.BuildConfig
 
 class RecompositionCounter(var value: Int)
 

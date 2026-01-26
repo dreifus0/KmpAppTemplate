@@ -10,6 +10,7 @@ import com.dreifus.navigation.screen.BaseDestination
 import com.dreifus.navigation.screen.bottomsheet.BottomSheetScreen
 import com.dreifus.navigation.screen.dialog.DialogScreen
 import com.dreifus.navigation.screen.regular.RegularScreen
+import com.dreifus.template.uikit.BuildConfig
 import kotlinx.parcelize.Parcelize
 
 val LocalRegularNavController: ProvidableCompositionLocal<NavController<RegularScreen>> =

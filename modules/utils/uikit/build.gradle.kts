@@ -7,6 +7,10 @@ plugins {
 android {
     namespace = "com.dreifus.template.uikit"
     configureAndroidCommon()
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 configureKotlinAndroid()
