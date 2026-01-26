@@ -1,0 +1,113 @@
+package com.dreifus.template.uikit.style
+
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
+
+// https://www.figma.com/file/ufcVOEok25oxcZoAdGOkwR/%F0%9F%92%A0-DS-2023?type=design&node-id=1006-15776&mode=design&t=iLTtSMi8jNZ1I8Ws-0
+@Immutable
+data class AppColors(
+    // Content
+    val contentPrimary: Color,
+    val contentSecondary: Color,
+    val contentTertiary: Color,
+    val contentDividers: Color,
+    val contentBorder: Color,
+    val contentShadow: Color,
+    // Background
+    val backgroundBase: Color,
+    val backgroundSecondary: Color,
+    val backgroundPositive: Color,
+    val backgroundAttention: Color,
+    val backgroundNegative: Color,
+    val backgroundDisabled: Color,
+    val backgroundNeutral: Color,
+    val backgroundActive: Color,
+    // Accent
+    val accentPrimary: Color,
+    val accentSecondary: Color,
+    val accentPositive: Color,
+    val accentAttention: Color,
+    val accentNegative: Color,
+    val accentLink: Color,
+    val accentOnPrimary: Color,
+    val accentOnSecondary: Color,
+    // Extra
+    val extraBonusContainer: Color,
+    val extraOnBonusContainer: Color,
+) {
+
+    val isDarkTheme = backgroundBase.luminance() < 0.5f
+
+    fun toComposeColorScheme(): ColorScheme {
+        return if (isDarkTheme) {
+            darkColorScheme(
+                primary = accentSecondary,
+                onPrimary = accentOnSecondary,
+                secondary = accentPrimary,
+                onSecondary = accentOnPrimary,
+                background = backgroundBase,
+                onBackground = contentPrimary,
+                surface = backgroundBase,
+                onSurface = contentPrimary,
+                error = accentNegative,
+                onError = contentPrimary,
+                outline = contentDividers,
+                surfaceVariant = backgroundSecondary,
+                primaryContainer = accentPrimary,
+                onPrimaryContainer = backgroundBase,
+            )
+        } else {
+            lightColorScheme(
+                primary = accentPrimary,
+                onPrimary = accentOnPrimary,
+                secondary = accentSecondary,
+                onSecondary = accentOnSecondary,
+                background = backgroundBase,
+                onBackground = contentPrimary,
+                surface = backgroundBase,
+                onSurface = contentPrimary,
+                error = accentNegative,
+                onError = contentPrimary,
+                outline = contentDividers,
+                surfaceVariant = backgroundSecondary,
+                primaryContainer = accentPrimary,
+                onPrimaryContainer = backgroundBase,
+            )
+        }
+    }
+}
+
+val LocalAppColors = staticCompositionLocalOf {
+    AppColors(
+        contentPrimary = Color.Unspecified,
+        contentSecondary = Color.Unspecified,
+        contentTertiary = Color.Unspecified,
+        contentDividers = Color.Unspecified,
+        contentBorder = Color.Unspecified,
+        contentShadow = Color.Unspecified,
+        backgroundBase = Color.Unspecified,
+        backgroundSecondary = Color.Unspecified,
+        backgroundPositive = Color.Unspecified,
+        backgroundAttention = Color.Unspecified,
+        backgroundNegative = Color.Unspecified,
+        backgroundDisabled = Color.Unspecified,
+        backgroundNeutral = Color.Unspecified,
+        backgroundActive = Color.Unspecified,
+        accentPrimary = Color.Unspecified,
+        accentSecondary = Color.Unspecified,
+        accentPositive = Color.Unspecified,
+        accentAttention = Color.Unspecified,
+        accentNegative = Color.Unspecified,
+        accentLink = Color.Unspecified,
+        accentOnPrimary = Color.Unspecified,
+        accentOnSecondary = Color.Unspecified,
+        extraBonusContainer = Color.Unspecified,
+        extraOnBonusContainer = Color.Unspecified,
+    )
+}
+

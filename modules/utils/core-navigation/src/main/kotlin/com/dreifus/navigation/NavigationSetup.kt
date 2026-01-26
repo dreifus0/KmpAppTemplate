@@ -1,0 +1,86 @@
+package com.dreifus.navigation
+
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavEntryDecorator
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.scene.DialogSceneStrategy
+import androidx.navigation3.ui.NavDisplay
+import com.dreifus.navigation.controller.LocalBottomSheetNavController
+import com.dreifus.navigation.controller.LocalDialogNavController
+import com.dreifus.navigation.controller.LocalRegularNavController
+import com.dreifus.navigation.controller.NavControllersHolder
+import com.dreifus.navigation.screen.BaseDestination
+import com.dreifus.navigation.screen.bottomsheet.BottomSheetSceneStrategy
+
+private val noContentTransform = ContentTransform(
+    targetContentEnter = EnterTransition.None,
+    initialContentExit = ExitTransition.None,
+    sizeTransform = null,
+)
+
+@Composable
+fun NavigationSetup(
+    navControllersHolder: NavControllersHolder,
+    listener: (BaseDestination) -> Unit = {},
+    entryDecorators: List<NavEntryDecorator<BaseDestination>> = emptyList(),
+) {
+    val backstack by remember {
+        var currentRegularScreen = navControllersHolder.regular.backstack.last()
+        derivedStateOf {
+            val newRegularScreen = navControllersHolder.regular.backstack.last()
+            val regularScreenChanged = newRegularScreen != currentRegularScreen
+            if (regularScreenChanged) {
+                currentRegularScreen = newRegularScreen
+                // если сменился экран, то закрываем все оверлеи
+                navControllersHolder.bottomSheet.backstack.clear()
+                navControllersHolder.dialog.backstack.clear()
+            }
+            val overlays =
+                navControllersHolder.bottomSheet.backstack + navControllersHolder.dialog.backstack
+            navControllersHolder.regular.backstack +
+                    // показываем только последний диалог или боттомшит (ограничение текущих реализаций сцен)
+                    listOfNotNull(overlays.lastOrNull())
+        }
+    }
+    val currentScreen by remember { derivedStateOf { backstack.last() } }
+    LaunchedEffect(currentScreen) {
+        listener(currentScreen)
+    }
+
+    CompositionLocalProvider(
+        LocalRegularNavController provides navControllersHolder.regular,
+        LocalDialogNavController provides navControllersHolder.dialog,
+        LocalBottomSheetNavController provides navControllersHolder.bottomSheet,
+    ) {
+        NavDisplay(
+            backStack = backstack,
+            sceneStrategy = remember {
+                DialogSceneStrategy<BaseDestination>() then BottomSheetSceneStrategy()
+            },
+            entryDecorators = entryDecorators + listOf(
+                rememberSaveableStateHolderNavEntryDecorator(),
+                rememberViewModelStoreNavEntryDecorator(),
+            ),
+            onBack = {
+                when {
+                    navControllersHolder.bottomSheet.backstack.isNotEmpty() -> navControllersHolder.bottomSheet.pop()
+                    navControllersHolder.dialog.backstack.isNotEmpty() -> navControllersHolder.dialog.pop()
+                    else -> navControllersHolder.regular.pop()
+                }
+            },
+            transitionSpec = { noContentTransform },
+            popTransitionSpec = { noContentTransform },
+        ) {
+            it.navEntry()
+        }
+    }
+}
