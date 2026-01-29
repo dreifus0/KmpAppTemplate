@@ -5,9 +5,9 @@ import com.dreifus.navigation.screen.dialog.DialogScreen
 import com.dreifus.navigation.screen.regular.RegularScreen
 
 class NavControllersHolder(
-    rootDestination: RegularScreen,
+    rootScreen: RegularScreen,
 ) {
-    val regular = NavController(rootDestination)
+    val regular = NavController(rootScreen)
     val dialog = NavController<DialogScreen>(filterNavigationToSameClass = true)
     val bottomSheet = NavController<BottomSheetScreen>(filterNavigationToSameClass = true)
 }

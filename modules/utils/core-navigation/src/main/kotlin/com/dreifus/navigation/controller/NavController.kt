@@ -3,44 +3,44 @@ package com.dreifus.navigation.controller
 import android.util.Log
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateListOf
-import com.dreifus.navigation.screen.BaseDestination
+import com.dreifus.navigation.screen.BaseScreen
 
 @Stable
-class NavController<T : BaseDestination>(
-    vararg destinations: T,
-    /** Предотвращает переход на экран с тем же классом, что и текущий. Актуально для оверлеев.*/
+class NavController<T : BaseScreen>(
+    vararg screens: T,
+    /** Prevents navigation to a screen with the same class as the current one. Relevant for overlays. */
     private val filterNavigationToSameClass: Boolean = false,
 ) {
-    val backstack = mutableStateListOf(*destinations)
+    val backstack = mutableStateListOf(*screens)
 
-    fun navigate(destination: T) {
+    fun navigate(screen: T) {
         if (!filterNavigationToSameClass || backstack.lastOrNull()
-                ?.let { it::class } != destination::class
+                ?.let { it::class } != screen::class
         ) {
-            backstack.add(destination)
+            backstack.add(screen)
         } else {
             Log.e(
                 "NavController",
-                "Attempted to navigate to the same screen class as the current one: ${destination::class} "
+                "Attempted to navigate to the same screen class as the current one: ${screen::class} "
             )
         }
     }
 
-    fun replaceLast(destination: T): Boolean {
+    fun replaceLast(screen: T): Boolean {
         if (backstack.isNotEmpty()) {
-            backstack[backstack.size - 1] = destination
+            backstack[backstack.size - 1] = screen
             return true
         }
         return false
     }
 
-    fun replaceAll(destinations: List<T>) {
+    fun replaceAll(screens: List<T>) {
         backstack.clear()
-        backstack.addAll(destinations)
+        backstack.addAll(screens)
     }
 
-    fun replaceAll(destination: T) {
-        replaceAll(listOf(destination))
+    fun replaceAll(screen: T) {
+        replaceAll(listOf(screen))
     }
 
     fun pop(): Boolean {
@@ -60,9 +60,9 @@ class NavController<T : BaseDestination>(
     }
 
     /**
-     * Pop up to the first destination that matches the [predicate].
-     * If [inclusive] is true, the matching destination will also be popped.
-     * If [toFirst] is true, the backstack will be cleared to the first destination in the backstack.
+     * Pop up to the first screen that matches the [predicate].
+     * If [inclusive] is true, the matching screen will also be popped.
+     * If [toFirst] is true, the backstack will be cleared to the first screen in the backstack.
      */
     fun popUpTo(
         inclusive: Boolean = false,
@@ -80,13 +80,13 @@ class NavController<T : BaseDestination>(
     }
 
     /**
-     * Pops all destinations off the backstack up to the destination that meets the condition
-     * of the [predicate] and replaces them with [newDestinations].
+     * Pops all screens off the backstack up to the screen that meets the condition
+     * of the [predicate] and replaces them with [newScreens].
      *
      * The order of the items in the list is interpreted as going from the bottom of the backstack
      * to the top. It means that the last item of the list will become the currently displayed item.
      *
-     * The [newDestinations] list may be empty.
+     * The [newScreens] list may be empty.
      *
      * @param [inclusive] whether the item itself should be popped or not, default value is `false`
      *
@@ -97,21 +97,21 @@ class NavController<T : BaseDestination>(
      * @return `true` - if the item matching the predicate was found, `false` - otherwise
      */
     fun replaceUpTo(
-        newDestinations: List<T>,
+        newScreens: List<T>,
         inclusive: Boolean = false,
         toFirst: Boolean = false,
         predicate: (T) -> Boolean,
     ): Boolean {
         if (popUpTo(inclusive, toFirst, predicate)) {
-            backstack.addAll(newDestinations)
+            backstack.addAll(newScreens)
             return true
         }
         return false
     }
 
     /**
-     * Pops all destinations off the backstack up to the destination that meets the condition
-     * of the [predicate] and replaces them with a [newDestination].
+     * Pops all screens off the backstack up to the screen that meets the condition
+     * of the [predicate] and replaces them with a [newScreen].
      *
      * @param [inclusive] whether the item itself should be popped or not, default value is `false`
      *
@@ -122,9 +122,9 @@ class NavController<T : BaseDestination>(
      * @return `true` - if the item matching the predicate was found, `false` - otherwise
      */
     fun replaceUpTo(
-        newDestination: T,
+        newScreen: T,
         inclusive: Boolean = false,
         toFirst: Boolean = false,
         predicate: (T) -> Boolean,
-    ): Boolean = replaceUpTo(listOf(newDestination), inclusive, toFirst, predicate)
+    ): Boolean = replaceUpTo(listOf(newScreen), inclusive, toFirst, predicate)
 }

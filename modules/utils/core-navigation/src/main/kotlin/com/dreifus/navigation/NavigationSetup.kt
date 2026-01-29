@@ -18,7 +18,7 @@ import com.dreifus.navigation.controller.LocalBottomSheetNavController
 import com.dreifus.navigation.controller.LocalDialogNavController
 import com.dreifus.navigation.controller.LocalRegularNavController
 import com.dreifus.navigation.controller.NavControllersHolder
-import com.dreifus.navigation.screen.BaseDestination
+import com.dreifus.navigation.screen.BaseScreen
 import com.dreifus.navigation.screen.bottomsheet.BottomSheetSceneStrategy
 
 private val noContentTransform = ContentTransform(
@@ -30,8 +30,8 @@ private val noContentTransform = ContentTransform(
 @Composable
 fun NavigationSetup(
     navControllersHolder: NavControllersHolder,
-    listener: (BaseDestination) -> Unit = {},
-    entryDecorators: List<NavEntryDecorator<BaseDestination>> = emptyList(),
+    listener: (BaseScreen) -> Unit = {},
+    entryDecorators: List<NavEntryDecorator<BaseScreen>> = emptyList(),
 ) {
     val backstack by remember {
         var currentRegularScreen = navControllersHolder.regular.backstack.last()
@@ -40,14 +40,14 @@ fun NavigationSetup(
             val regularScreenChanged = newRegularScreen != currentRegularScreen
             if (regularScreenChanged) {
                 currentRegularScreen = newRegularScreen
-                // если сменился экран, то закрываем все оверлеи
+                // if the screen changed, close all overlays
                 navControllersHolder.bottomSheet.backstack.clear()
                 navControllersHolder.dialog.backstack.clear()
             }
             val overlays =
                 navControllersHolder.bottomSheet.backstack + navControllersHolder.dialog.backstack
             navControllersHolder.regular.backstack +
-                    // показываем только последний диалог или боттомшит (ограничение текущих реализаций сцен)
+                    // show only the last dialog or bottom sheet (limitation of current scene implementations)
                     listOfNotNull(overlays.lastOrNull())
         }
     }
@@ -64,7 +64,7 @@ fun NavigationSetup(
         NavDisplay(
             backStack = backstack,
             sceneStrategy = remember {
-                DialogSceneStrategy<BaseDestination>() then BottomSheetSceneStrategy()
+                DialogSceneStrategy<BaseScreen>() then BottomSheetSceneStrategy()
             },
             entryDecorators = entryDecorators + listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),

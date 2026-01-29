@@ -14,21 +14,21 @@ import androidx.navigation3.scene.OverlayScene
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneStrategy
 import androidx.navigation3.scene.SceneStrategyScope
-import com.dreifus.navigation.screen.BaseDestination
+import com.dreifus.navigation.screen.BaseScreen
 import com.dreifus.navigation.screen.bottomsheet.BottomSheetSceneStrategy.Companion.bottomSheet
 import com.dreifus.template.uikit.dialog.BottomSheetDialog
 
-interface BottomSheetScreen : BaseDestination {
-    override fun <T : BaseDestination> navEntry() = navEntry<T>(
+interface BottomSheetScreen : BaseScreen {
+    override fun <T : BaseScreen> navEntry() = navEntry<T>(
         metadata = @OptIn(ExperimentalMaterial3Api::class) BottomSheetSceneStrategy.Companion.bottomSheet(),
-    ) { destination ->
+    ) { screen ->
         Surface(
             modifier = Modifier.Companion
                 .fillMaxWidth()
                 .semantics { testTagsAsResourceId = true }
-                .testTag(destination::class.simpleName!!)
+                .testTag(screen::class.simpleName!!)
         ) {
-            destination.Content()
+            screen.Content()
         }
     }
 }

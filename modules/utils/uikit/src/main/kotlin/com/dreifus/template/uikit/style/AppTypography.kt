@@ -18,7 +18,7 @@ import com.dreifus.template.uikit.R
 val NotoFontFamily = FontFamily(
     Font(R.font.notosans_semibold, weight = FontWeight.W600, style = FontStyle.Normal),
     Font(R.font.notosans_regular, weight = FontWeight.W400, style = FontStyle.Normal),
-    // пока не используем
+    // not used yet
     //  Font(R.font.notosans_bold, weight = FontWeight.W700, style = FontStyle.Normal),
     //  Font(R.font.notosans_bolditalic, weight = FontWeight.W700, style = FontStyle.Italic),
     //  Font(R.font.notosans_semibolditalic, weight = FontWeight.W600, style = FontStyle.Italic),

@@ -47,7 +47,7 @@ abstract class SpecificAppTheme {
     }
 
     companion object {
-        /** Форсируем светлую или темную тему, например для экрана с камерой */
+        /** Force light or dark theme, e.g. for camera screen */
         @Composable
         operator fun invoke(
             darkTheme: Boolean,

@@ -34,8 +34,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 /**
- * Копипаста [androidx.compose.material3.ScrollableTabRow]
- * с возможностью изменить минимальную ширину таба через параметр [minTabWidth]
+ * Copy of [androidx.compose.material3.ScrollableTabRow]
+ * with ability to change minimum tab width via [minTabWidth] parameter
  **/
 @Composable
 fun ScrollableTabRow(

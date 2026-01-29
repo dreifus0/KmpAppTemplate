@@ -37,10 +37,10 @@ fun AppTheme(
     themedParams: ThemedParamsMap = LocalThemedParams.current,
     icons: IconsProvider = LocalIcons.current,
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true, // Оставим для тестов на будущее
+    dynamicColor: Boolean = true, // Keep for future testing
     content: @Composable () -> Unit,
 ) {
-    // Оставим для тестов на будущее
+    // Keep for future testing
 //    val colorScheme = when {
 //        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
 //            val context = LocalContext.current
@@ -54,7 +54,7 @@ fun AppTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            // Может не быть активити, если вызывается из-под попапа
+            // Activity may not be available if called from a popup
             val window = (view.context as? Activity)?.window ?: return@SideEffect
             window.statusBarColor = 0 // transparent
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !colors.isDarkTheme

@@ -10,7 +10,7 @@ import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import java.io.BufferedWriter
 
-class DestinationsProcessor(
+class ScreensProcessor(
     private val environment: SymbolProcessorEnvironment,
 ) : SymbolProcessor {
 
@@ -20,32 +20,32 @@ class DestinationsProcessor(
         if (invoked) {
             return emptyList()
         }
-        val destinationClasses = buildList {
+        val screenClasses = buildList {
             resolver.getAllFiles().forEach { file ->
                 addAll(
                     file.declarations
                         .filterIsInstance<KSClassDeclaration>()
-                        .filter { it.simpleName.asString().endsWith("Destination") }
+                        .filter { it.simpleName.asString().endsWith("Screen") }
                 )
             }
         }
-        if (destinationClasses.isNotEmpty()) {
+        if (screenClasses.isNotEmpty()) {
             @OptIn(KspExperimental::class)
             val moduleName = resolver.getModuleName()
             val modulePackageName = environment.options["androidNamespace"]
-                ?: ("com.dreifus.template.destination." + moduleName.asString().replace('-', '.'))
-            val sources = destinationClasses.mapNotNull { it.containingFile }.distinct().toTypedArray()
+                ?: ("com.dreifus.screen." + moduleName.asString().replace('-', '.'))
+            val sources = screenClasses.mapNotNull { it.containingFile }.distinct().toTypedArray()
             val file = environment.codeGenerator.createNewFile(
                 dependencies = Dependencies(true, *sources),
                 packageName = modulePackageName,
-                fileName = "DestinationsModule",
+                fileName = "ScreensModule",
                 extensionName = "kt",
             )
             file.bufferedWriter().use { writer ->
                 writer.write(daggerModuleHeader(modulePackageName))
 
-                destinationClasses.forEach { destination ->
-                    writeDestinationInfoProvider(destination, writer)
+                screenClasses.forEach { screen ->
+                    writeScreenInfoProvider(screen, writer)
                 }
 
                 writer.write("\n}\n")
@@ -55,29 +55,29 @@ class DestinationsProcessor(
         return emptyList()
     }
 
-    private fun writeDestinationInfoProvider(destination: KSClassDeclaration, writer: BufferedWriter) {
-        destination.qualifiedName?.apply {
-            val destinationInfo = destination.annotations.find { it.shortName.asString() == "DestinationInfo" }
+    private fun writeScreenInfoProvider(screen: KSClassDeclaration, writer: BufferedWriter) {
+        screen.qualifiedName?.apply {
+            val screenInfo = screen.annotations.find { it.shortName.asString() == "ScreenInfo" }
             val qualifiedName = asString()
-            val name = destinationInfo?.arguments?.find {
+            val name = screenInfo?.arguments?.find {
                 it.name?.asString() == "name"
             }?.value?.toString().orEmpty().ifEmpty {
-                getShortName().removeSuffix("Destination")
+                getShortName().removeSuffix("Screen")
             }
             val valueTeam = (
-                destinationInfo?.arguments
-                    ?.find { it.name?.asString() == "valueTeam" }
-                    ?.value?.toString()?.takeIf { it.isNotEmpty() }
-                    ?: environment.options["valueTeam"]
-                    ?: ""
-                ).let { "\"$it\"" }
+                    screenInfo?.arguments
+                        ?.find { it.name?.asString() == "valueTeam" }
+                        ?.value?.toString()?.takeIf { it.isNotEmpty() }
+                        ?: environment.options["valueTeam"]
+                        ?: ""
+                    ).let { "\"$it\"" }
             writer.write("\n\n")
             writer.write(
                 """
                     @Provides
                     @IntoMap
-                    @DestinationClassKey($qualifiedName::class)
-                    fun provide${name}DestinationInfo(): DestinationInfo = DestinationInfo(
+                    @ScreenClassKey($qualifiedName::class)
+                    fun provide${name}ScreenInfo(): ScreenInfo = ScreenInfo(
                         name = "$name",
                         valueTeam = $valueTeam,
                     )
@@ -89,8 +89,8 @@ class DestinationsProcessor(
     private fun daggerModuleHeader(modulePackageName: String) = """
         package $modulePackageName
 
-        import com.dreifus.template.core.navigation2.DestinationClassKey
-        import com.dreifus.template.core.navigation2.DestinationInfo
+        import com.dreifus.navigation.ScreenClassKey
+        import com.dreifus.navigation.ScreenInfo
         import dev.zacsweers.metro.Provides
         import dev.zacsweers.metro.ContributesTo
         import dev.zacsweers.metro.AppScope
@@ -98,14 +98,14 @@ class DestinationsProcessor(
         import dev.zacsweers.metro.IntoMap
 
         @ContributesTo(AppScope::class)
-        interface DestinationsModule {
+        interface ScreensModule {
     """.trimIndent()
 }
 
-class DestinationsProcessorProvider : SymbolProcessorProvider {
+class ScreensProcessorProvider : SymbolProcessorProvider {
     override fun create(
         environment: SymbolProcessorEnvironment,
     ): SymbolProcessor {
-        return DestinationsProcessor(environment)
+        return ScreensProcessor(environment)
     }
 }

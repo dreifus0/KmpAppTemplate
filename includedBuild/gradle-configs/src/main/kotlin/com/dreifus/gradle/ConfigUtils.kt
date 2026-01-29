@@ -30,7 +30,7 @@ object SupportedLanguages {
 }
 
 /**
- * Упрощаем добавление jar'ок. В Groovy выглядело так implementation fileTree(dir: 'libs', include: ['*.jar'])
+ * Simplifies adding jars. In Groovy it looked like: implementation fileTree(dir: 'libs', include: ['*.jar'])
  */
 val DependencyHandler.implementationJarLibs: Project.() -> Unit
     get() = {
@@ -38,7 +38,7 @@ val DependencyHandler.implementationJarLibs: Project.() -> Unit
     }
 
 /**
- * Базовая конфигурация для Android модулей (библиотек и приложений)
+ * Base configuration for Android modules (libraries and applications)
  */
 fun CommonExtension<*, *, *, *, *, *>.configureAndroidCommon() {
     compileSdk = Sdks.compile
@@ -54,7 +54,7 @@ fun CommonExtension<*, *, *, *, *, *>.configureAndroidCommon() {
 }
 
 /**
- * Настройка Kotlin compilation для Android проектов
+ * Kotlin compilation setup for Android projects
  */
 fun Project.configureKotlinAndroid() {
     extensions.findByType(KotlinAndroidProjectExtension::class.java)?.apply {

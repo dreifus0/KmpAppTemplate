@@ -19,8 +19,10 @@ include(
     ":android:app",
     ":modules:utils:uikit",
     ":modules:utils:di-common",
+    ":modules:utils:helpers",
     ":modules:utils:core-navigation",
-    ":modules:utils:destination-collector",
+    ":modules:utils:core-extensions",
+    ":modules:utils:screen-collector",
     ":modules:utils:ktorfit-di",
     ":modules:utils:metro-android-ksp",
 )

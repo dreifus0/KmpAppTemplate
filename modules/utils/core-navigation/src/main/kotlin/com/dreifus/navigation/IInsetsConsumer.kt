@@ -11,10 +11,10 @@ interface IInsetsConsumer {
     val navigationBarsConsumed: Boolean get() = false
 }
 
-internal fun Modifier.statusBarsPaddingIfNeeded(destination: IInsetsConsumer?): Modifier {
+internal fun Modifier.statusBarsPaddingIfNeeded(screen: IInsetsConsumer?): Modifier {
     return this.then(
         Modifier.run {
-            if (destination?.statusBarConsumed != true) {
+            if (screen?.statusBarConsumed != true) {
                 this.statusBarsPadding()
             } else {
                 this
@@ -23,10 +23,10 @@ internal fun Modifier.statusBarsPaddingIfNeeded(destination: IInsetsConsumer?): 
     )
 }
 
-internal fun Modifier.imePaddingIfNeeded(destination: IInsetsConsumer?): Modifier {
+internal fun Modifier.imePaddingIfNeeded(screen: IInsetsConsumer?): Modifier {
     return this.then(
         Modifier.run {
-            if (destination?.imeConsumed != true) {
+            if (screen?.imeConsumed != true) {
                 this.imePadding()
             } else {
                 this
@@ -35,10 +35,10 @@ internal fun Modifier.imePaddingIfNeeded(destination: IInsetsConsumer?): Modifie
     )
 }
 
-internal fun Modifier.navigationBarsPaddingIfNeeded(destination: IInsetsConsumer?): Modifier {
+internal fun Modifier.navigationBarsPaddingIfNeeded(screen: IInsetsConsumer?): Modifier {
     return this.then(
         Modifier.run {
-            if (destination?.navigationBarsConsumed != true) {
+            if (screen?.navigationBarsConsumed != true) {
                 this.navigationBarsPadding()
             } else {
                 this

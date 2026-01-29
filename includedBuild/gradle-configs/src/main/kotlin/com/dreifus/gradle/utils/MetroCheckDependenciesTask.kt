@@ -33,22 +33,22 @@ open class MetroCheckDependenciesTask : DefaultTask() {
 
         fun checkMetroDependencies() {
             val dependencies = project.configurations.filter {
-                // первый символ "i" в "implementation" не проверяем что бы не использовать ignoreCase
+                // skip first char "i" in "implementation" to avoid using ignoreCase
                 it.name.endsWith("mplementation") ||
                     it.name.endsWith("api", ignoreCase = true)
             }.flatMap { it.dependencies.withType<ProjectDependency>() }
             prepareDependencies(dependencies)
 
-            // Сначала проверяем транзитивные зависимости
+            // First check transitive dependencies
             dependencies.forEach { projectDependency ->
                 project.project(projectDependency.path).findMetroDependencies(isTransitiveOnly = true) {
                     isTransitiveOnlyChecked = true
-                    // сбрасываем список проверенных зависимостей, так как проверяем заново
-                    // с новым значением isTransitiveOnly.
+                    // reset list of checked dependencies since we're checking again
+                    // with new isTransitiveOnly value.
                     dependenciesChecked.clear()
                     prepareDependencies(dependencies)
 
-                    // Затем проверяем прямые зависимости
+                    // Then check direct dependencies
                     dependencies.forEach { projectDependency ->
                         project.project(projectDependency.path).findMetroDependencies(isTransitiveOnly = false) {
                             dependenciesWithMetro.entries.removeAll { it.value }
@@ -61,17 +61,17 @@ open class MetroCheckDependenciesTask : DefaultTask() {
 
         private fun prepareDependencies(dependencies: List<ProjectDependency>) {
             dependencies.forEach { projectDependency ->
-                // промечаем что модуль уже добавлен в список на проверку
+                // mark that module is already added to check list
                 dependenciesChecked[projectDependency.path] = false
-                // Что бы конфигурация проекта прилы не завершилась раньше,
-                // чем конфигурация модулей, от которых он зависит.
-                // Так как нужно пройти по всему дереву модулей и проверить в каждом зависимости,
-                // надо дождаться пока код проверки зависомостей выполнится во всех модулях.
-                // По дефолту конфигурация апп модуля завершается раньше,
-                // и после этого из за кеширования тасок уже нельзя модифицировать поля таски,
-                // добавляя туда текст ошибки. На времени конфигурации это по идее не отражается,
-                // просто финализация конфигурации апп модуля будет дожидаться пока завершится
-                // конфигурация всех зависимостей.
+                // To prevent app project configuration from completing earlier
+                // than configuration of modules it depends on.
+                // Since we need to traverse the entire module tree and check dependencies in each,
+                // we need to wait for dependency checking code to execute in all modules.
+                // By default, app module configuration completes earlier,
+                // and after that due to task caching, task fields can no longer be modified
+                // to add error text. This shouldn't affect configuration time,
+                // just finalization of app module configuration will wait for
+                // configuration of all dependencies to complete.
                 project.evaluationDependsOn(projectDependency.path)
             }
         }
@@ -111,7 +111,7 @@ open class MetroCheckDependenciesTask : DefaultTask() {
                     }
                 }
                 val dependencies = configurations.filter {
-                    // первый символ "i" в "implementation" не проверяем что бы не использовать ignoreCase
+                    // skip first char "i" in "implementation" to avoid using ignoreCase
                     (!isTransitiveOnly && it.name.endsWith("mplementation")) ||
                         it.name.endsWith("api", ignoreCase = true)
                 }.flatMap { configuration ->

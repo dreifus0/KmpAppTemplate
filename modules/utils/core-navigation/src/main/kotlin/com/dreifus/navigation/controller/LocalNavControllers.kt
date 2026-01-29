@@ -6,7 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.navigation3.runtime.NavEntry
-import com.dreifus.navigation.screen.BaseDestination
+import com.dreifus.navigation.screen.BaseScreen
 import com.dreifus.navigation.screen.bottomsheet.BottomSheetScreen
 import com.dreifus.navigation.screen.dialog.DialogScreen
 import com.dreifus.navigation.screen.regular.RegularScreen
@@ -48,7 +48,7 @@ object Navigation {
         override fun Content() = Unit
 
         @Composable
-        inline fun <T : BaseDestination> localInspectionSafeNavController(
+        inline fun <T : BaseScreen> localInspectionSafeNavController(
             normalController: @Composable () -> NavController<T>,
         ): NavController<T> = if (BuildConfig.DEBUG && LocalInspectionMode.current) {
             @Suppress("UNCHECKED_CAST")
@@ -57,6 +57,6 @@ object Navigation {
             normalController()
         }
 
-        override fun <T : BaseDestination> navEntry(): NavEntry<T> = super<RegularScreen>.navEntry()
+        override fun <T : BaseScreen> navEntry(): NavEntry<T> = super<RegularScreen>.navEntry()
     }
 }

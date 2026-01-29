@@ -16,7 +16,7 @@ open class BackToolbarButton(
     override fun onClick(): () -> Unit {
         val activity: Activity? = LocalActivity.current
         return {
-            // Не триггерим nav.pop() напрямую, т.к. поведение может быть переопределено
+            // Don't trigger nav.pop() directly as behavior may be overridden
             activity?.onBackPressed()
         }
     }

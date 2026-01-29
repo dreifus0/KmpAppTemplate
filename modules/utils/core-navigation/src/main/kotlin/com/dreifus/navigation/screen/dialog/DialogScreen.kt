@@ -20,20 +20,20 @@ import androidx.navigation3.scene.DialogSceneStrategy
 import com.dreifus.navigation.IInsetsConsumer
 import com.dreifus.navigation.imePaddingIfNeeded
 import com.dreifus.navigation.navigationBarsPaddingIfNeeded
-import com.dreifus.navigation.screen.BaseDestination
+import com.dreifus.navigation.screen.BaseScreen
 import com.dreifus.navigation.statusBarsPaddingIfNeeded
 import com.dreifus.template.uikit.style.AppTheme
 
-interface DialogScreen : BaseDestination {
-    override fun <T : BaseDestination> navEntry() = navEntry<T>(
+interface DialogScreen : BaseScreen {
+    override fun <T : BaseScreen> navEntry() = navEntry<T>(
         metadata = DialogSceneStrategy.dialog(
             DialogProperties(
                 usePlatformDefaultWidth = true,
                 decorFitsSystemWindows = false
             )
         ),
-    ) { destination ->
-        // Далее вся логика с атрибутами окон нужна для того, чтобы статус и нав бары тоже затенялись
+    ) { screen ->
+        // The following window attributes logic is needed to also dim status and nav bars
         // https://www.droidcon.com/2024/01/15/camouflage-the-status-bar-with-edge-to-edge-jetpack-compose-screens-and-dialogs/
         val activityWindow = LocalActivity.current!!.window
         val dialogWindow = (LocalView.current.parent as? DialogWindowProvider)?.window
@@ -56,13 +56,13 @@ interface DialogScreen : BaseDestination {
                 .fillMaxSize()
                 .background(AppTheme.colors.contentPrimary.copy(alpha = 0.3f))
                 .semantics { testTagsAsResourceId = true }
-                .testTag(destination::class.simpleName!!)
-                .statusBarsPaddingIfNeeded(destination as? IInsetsConsumer)
-                .imePaddingIfNeeded(destination as? IInsetsConsumer)
-                .navigationBarsPaddingIfNeeded(destination as? IInsetsConsumer),
+                .testTag(screen::class.simpleName!!)
+                .statusBarsPaddingIfNeeded(screen as? IInsetsConsumer)
+                .imePaddingIfNeeded(screen as? IInsetsConsumer)
+                .navigationBarsPaddingIfNeeded(screen as? IInsetsConsumer),
             contentAlignment = Alignment.Companion.Center,
         ) {
-            destination.Content()
+            screen.Content()
         }
     }
 }

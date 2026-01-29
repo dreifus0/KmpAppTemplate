@@ -12,14 +12,14 @@ import kotlinx.serialization.Serializable
 import kotlin.reflect.KClass
 
 @Stable
-interface BaseDestination : Parcelable {
+interface BaseScreen : Parcelable {
 
     @Composable
     fun Content()
 
-    fun getScreenTrackInfo(): DestinationTrackInfo? = null
+    fun getScreenTrackInfo(): ScreenTrackInfo? = null
 
-    fun <T : BaseDestination> navEntry(
+    fun <T : BaseScreen> navEntry(
         metadata: Map<String, Any> = emptyMap(),
         content: @Composable (T) -> Unit,
     ) = NavEntry(
@@ -29,22 +29,22 @@ interface BaseDestination : Parcelable {
         content = content,
     )
 
-    fun <T : BaseDestination> navEntry(): NavEntry<T>
+    fun <T : BaseScreen> navEntry(): NavEntry<T>
 }
 
-interface IDestinationWithDynamicParams {
+interface IScreenWithDynamicParams {
     val dynamicParamsMap: MutableMap<String, Any?>
 }
 
 /**
- * Для обмена данными между экранами через стек навигации.
+ * For exchanging data between screens via navigation stack.
  */
-abstract class DestinationWithDynamicParams : Parcelable, IDestinationWithDynamicParams {
+abstract class ScreenWithDynamicParams : Parcelable, IScreenWithDynamicParams {
     @IgnoredOnParcel
     override val dynamicParamsMap: MutableMap<String, Any?> = mutableMapOf()
 }
 
-abstract class DestinationWithResult : DestinationWithDynamicParams() {
+abstract class ScreenWithResult : ScreenWithDynamicParams() {
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T> resultState(): MutableState<T?> =
         dynamicParamsMap.getOrPut("result_" + T::class.java.name) {
@@ -53,23 +53,23 @@ abstract class DestinationWithResult : DestinationWithDynamicParams() {
 }
 
 @Serializable
-data class DestinationTrackInfo(
-    val name: String? = null, // default - class name without suffix "Destination"
+data class ScreenTrackInfo(
+    val name: String? = null, // default - class name without suffix "Screen"
     val valueTeam: String? = null,
     val others: Map<String, String> = emptyMap(),
 )
 
 /**
- * Для переопределения дефолтного описания информации о экране для аналитики.
+ * For overriding default screen info description for analytics.
  */
-annotation class DestinationInfo(
-    val name: String = "", // default - class name without suffix "Destination"
+annotation class ScreenInfo(
+    val name: String = "", // default - class name without suffix "Screen"
     val valueTeam: String = "", // default - value from gradle plugin trackingInfo { valueTeam = ... }
 )
 
-typealias DestinationsMap = Map<KClass<out BaseDestination>, DestinationInfo>
+typealias ScreensMap = Map<KClass<out BaseScreen>, ScreenInfo>
 
 @MapKey
-annotation class DestinationClassKey(
-    val value: KClass<out BaseDestination>,
+annotation class ScreenClassKey(
+    val value: KClass<out BaseScreen>,
 )

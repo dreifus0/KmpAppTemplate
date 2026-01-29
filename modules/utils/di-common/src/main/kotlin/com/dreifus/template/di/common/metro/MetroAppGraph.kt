@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
 
 interface MetroAppGraph : ActivityRetainedGraph.Factory {
 
-    @Multibinds
+    @Multibinds(allowEmpty = true)
     val appMembersInjectorsMap: Map<KClass<out MembersInjector<*>>, Provider<MembersInjector<*>>>
 
     @Provides

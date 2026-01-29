@@ -43,9 +43,9 @@ object AppThemeManager {
     }
 
     fun loadAppTheme(context: Context) {
-        // AppCompatDelegate не сохраняет выбранную ранее тему
-        // при перезапуске активити тема сбрасывается в AppCompatDelegate.MODE_NIGHT_UNSPECIFIED
-        // устанавливаем вручную
+        // AppCompatDelegate does not persist the previously selected theme
+        // when activity restarts, theme resets to AppCompatDelegate.MODE_NIGHT_UNSPECIFIED
+        // set it manually
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             setAppThemeAppCompatDelegate(getStoredAppTheme(context))
         }

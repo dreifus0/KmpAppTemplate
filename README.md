@@ -1,87 +1,97 @@
 # KMP App Template
 
-Шаблон для разработки Android приложений с возможностью расширения на iOS через Kotlin Multiplatform.
+A template for developing Android applications with the ability to extend to iOS through Kotlin
+Multiplatform.
 
-## Структура проекта
+## Project Structure
 
 ```
 KmpAppTemplate/
 ├── android/
-│   └── app/                       # Основной модуль Android приложения
+│   └── app/                       # Main Android application module
 │
-├── modules/utils/                 # Утилитные модули
-│   ├── core-navigation2/          # Навигация на базе Jetpack Navigation 3
-│   ├── destination-collector/     # KSP процессор для сбора destinations
-│   ├── di-common/                 # Dependency Injection на базе Metro
-│   ├── ktorfit-di/                # KSP процессор для Ktorfit интеграции
-│   ├── metro-android-ksp/         # KSP процессор для Metro DI
-│   └── uikit/                     # Модуль дизайн-системы
+├── modules/utils/                 # Utility modules
+│   ├── core-navigation/           # Navigation based on Jetpack Navigation 3
+│   ├── screen-collector/          # KSP processor for collecting navigation screens
+│   ├── di-common/                 # Dependency Injection based on Metro
+│   ├── ktorfit-di/                # KSP processor for Ktorfit integration
+│   ├── metro-android-ksp/         # KSP processor for Metro DI
+│   └── uikit/                     # Design system module
 │
 ├── includedBuild/                 # Convention plugins
 │   ├── gradle-configs/            # Gradle convention plugins
-│   └── shared-consts/             # Общие константы для сборки
+│   └── shared-consts/             # Shared build constants
 │
-├── commonBuild/                   # Базовый settings plugin (repositories)
+├── commonBuild/                   # Base settings plugin (repositories)
 │
 ├── gradle/
-│   └── libs.versions.toml         # Версии зависимостей
+│   └── libs.versions.toml         # Dependency versions
 │
-├── build.gradle.kts               # Корневой build файл
-├── settings.gradle.kts            # Настройки проекта
-└── gradle.properties              # Gradle свойства
+├── build.gradle.kts               # Root build file
+├── settings.gradle.kts            # Project settings
+└── gradle.properties              # Gradle properties
 ```
 
-## Технологический стек
+## Technology Stack
 
 - **Gradle** 9.0
 - **Kotlin** 2.1.0+
 - **Android Gradle Plugin** 8.7.3
-- **Jetpack Compose** с Material3
-- **Navigation 3** - навигация между экранами
+- **Jetpack Compose** with Material3
+- **Navigation 3** - screen navigation
 - **Metro DI** - Dependency Injection framework
-- **KSP** - Kotlin Symbol Processing для кодогенерации
-- **Ktorfit** - типизированный HTTP клиент
+- **KSP** - Kotlin Symbol Processing for code generation
+- **Ktorfit** - typed HTTP client
 
-## Утилитные модули
+## Utility Modules
 
-### core-navigation2
-Модуль для навигации с поддержкой:
-- Regular destinations (обычные экраны)
-- Dialog destinations (диалоги)
-- Bottom Sheet destinations (нижние панели)
-- Интеграция с Metro DI
+### core-navigation
+
+Navigation module with support for:
+
+- Regular screens
+- Dialog screens
+- Bottom Sheet screens
+- Integration with Metro DI
 
 ### di-common
-Модуль для Dependency Injection:
-- Интеграция с Metro DI framework
-- Base классы для Activity и Application
-- ViewModel factory с DI поддержкой
 
-### destination-collector
-KSP процессор для автоматического сбора destination классов.
+Dependency Injection module:
+
+- Integration with Metro DI framework
+- Base classes for Activity and Application
+- ViewModel factory with DI support
+
+### screen-collector
+
+KSP processor for automatic collection of navigation screen classes.
 
 ### ktorfit-di
-KSP процессор для генерации DI модулей для Ktorfit API клиентов.
+
+KSP processor for generating DI modules for Ktorfit API clients.
 
 ### metro-android-ksp
-KSP процессор для генерации кода Metro DI для Android компонентов.
+
+KSP processor for generating Metro DI code for Android components.
 
 ### uikit
-Модуль дизайн-системы с темой приложения и общими компонентами.
 
-## Начало работы
+Design system module with app theme and common components.
 
-### Требования
-- JDK 17 или выше
-- Android Studio Ladybug или выше
+## Getting Started
+
+### Requirements
+
+- JDK 17 or higher
+- Android Studio Ladybug or higher
 - Android SDK 24+
 
-### Сборка проекта
+### Building the Project
 
 ```bash
 ./gradlew :android:app:assembleDebug
 ```
 
-## Лицензия
+## License
 
 MIT License

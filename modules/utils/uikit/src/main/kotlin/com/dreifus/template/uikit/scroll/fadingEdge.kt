@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-// Важно применять его до модификатора horizontalScroll/verticalScroll
+// Important to apply before horizontalScroll/verticalScroll modifier
 fun Modifier.fadingEdge(
     scrollableState: ScrollableState,
     orientation: Orientation = Orientation.Vertical,

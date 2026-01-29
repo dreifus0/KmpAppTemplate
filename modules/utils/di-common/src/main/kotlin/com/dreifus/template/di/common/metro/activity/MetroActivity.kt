@@ -11,10 +11,12 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.dreifus.template.di.common.metro.MetroApp
 import com.dreifus.template.di.common.metro.inject
 import com.dreifus.template.di.common.metro.viewmodel.MetroViewModelFactory
+import dev.zacsweers.metro.HasMemberInjections
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metro.MembersInjector
 import kotlin.reflect.KClass
 
+@HasMemberInjections
 abstract class MetroActivity : AppCompatActivity() {
 
     abstract val membersInjectorClass: KClass<out MembersInjector<out MetroActivity>>

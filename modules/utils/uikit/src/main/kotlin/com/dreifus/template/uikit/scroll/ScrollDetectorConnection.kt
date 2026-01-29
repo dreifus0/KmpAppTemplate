@@ -11,7 +11,7 @@ import kotlin.math.absoluteValue
 class ScrollDetectorConnection : NestedScrollConnection {
     private val offsetHeightPx = mutableFloatStateOf(0f)
 
-    // 0 оффсет после скролла не станет и лучше взять значение побольше
+    // offset won't become 0 after scroll, so better to use a larger value
     val isScrolled: Boolean
         get() = offsetHeightPx.floatValue.absoluteValue > 1f
 

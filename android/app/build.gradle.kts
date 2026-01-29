@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.metro)
     alias(libs.plugins.ksp)
 }
@@ -28,10 +29,16 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.material)
+    implementation(libs.play.featureDelivery)
+    implementation(libs.mvu.core)
+    implementation(libs.androidx.splashScreen)
 
-    api(projects.modules.utils.coreNavigation)
-    api(projects.modules.utils.uikit)
+    implementation(projects.modules.utils.coreNavigation)
+    implementation(projects.modules.utils.coreExtensions)
+    implementation(projects.modules.utils.uikit)
+    implementation(projects.modules.utils.helpers)
 
-    api(projects.modules.utils.diCommon)
+    implementation(projects.modules.utils.diCommon)
     ksp(projects.modules.utils.metroAndroidKsp)
 }

@@ -70,7 +70,7 @@ fun BottomSheetDialog(
     if (sheetState.isDisplayed) {
         DisposableEffect(Unit) {
             onDispose {
-                // если шторка ещё видна, значит диспозимся не из за закрытия шторки и onDismissed дергать не надо
+                // if the sheet is still visible, we're disposing not because of sheet closing, so no need to call onDismissed
                 if (!sheetState.isDisplayed) {
                     onDismissed()
                     internalVisible = false
@@ -78,12 +78,12 @@ fun BottomSheetDialog(
             }
         }
     }
-    // на старых и возможно некоторых новых андроидах инсеты получается достать только когда мы внутри активити,
-    // так что запоминаем их на этом уровне, и вместо navigationBarsPadding() внутри диалога юзаем
+    // on old and possibly some new Android versions, insets can only be retrieved when inside an activity,
+    // so we remember them at this level and use padding(navigationBarsPadding) instead of navigationBarsPadding() inside the dialog
     // padding(navigationBarsPadding)
     val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues()
     val statusBarPadding = WindowInsets.statusBars.asPaddingValues()
-    // Чтобы в горизонтали ширина соответствовала ширине экрана
+    // To make width match screen width in landscape orientation
     val sheetMaxWidth = LocalConfiguration.current.let {
         if (it.screenWidthDp > it.screenHeightDp) {
             it.screenHeightDp
@@ -120,8 +120,8 @@ fun BottomSheetDialog(
                     }
                     .nestedScroll(scrollDetectorConnection)
                     .let {
-                        // Потому что шторка имеет ограниченную ширину и иначе в горизонтали
-                        // будет странный отступ слева внутри шторк
+                        // Because the sheet has limited width, otherwise in landscape
+                        // there will be a strange left padding inside the sheet
                         if (LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT) {
                             it.padding(navigationBarsPadding)
                         } else {
@@ -142,5 +142,5 @@ fun BottomSheetDialog(
     )
 }
 
-// шторка открыта или анимируется для открытия
+// sheet is open or animating to open
 private val SheetState.isDisplayed get() = isVisible || targetValue == SheetValue.Expanded

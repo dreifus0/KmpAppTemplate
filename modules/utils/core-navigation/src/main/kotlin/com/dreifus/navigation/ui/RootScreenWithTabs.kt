@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.dreifus.navigation.IInsetsConsumer
 import com.dreifus.navigation.controller.Navigation
 import com.dreifus.navigation.navigationBarsPaddingIfNeeded
-import com.dreifus.navigation.screen.BaseDestination
+import com.dreifus.navigation.screen.BaseScreen
 import com.dreifus.navigation.screen.regular.RegularScreen
 import com.dreifus.navigation.statusBarsPaddingIfNeeded
 import com.dreifus.template.uikit.tabs.TabBar
@@ -31,10 +31,10 @@ import com.dreifus.template.uikit.tabs.TabInfo
 import kotlin.reflect.KClass
 
 interface RootScreenWithTabs : RegularScreen {
-    override fun <T : BaseDestination> navEntry() = navEntry<T> { destination ->
+    override fun <T : BaseScreen> navEntry() = navEntry<T> { screen ->
         val tabs = LocalTabs.current
-        val currentTab = remember(tabs, destination) {
-            tabs.find { it.data.destinationClass == destination::class }
+        val currentTab = remember(tabs, screen) {
+            tabs.find { it.data.screenClass == screen::class }
         }
         val localDensity = LocalDensity.current
         var consumePaddingDp by remember {
@@ -43,19 +43,19 @@ interface RootScreenWithTabs : RegularScreen {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .statusBarsPaddingIfNeeded(destination as? IInsetsConsumer)
-                .navigationBarsPaddingIfNeeded(destination as? IInsetsConsumer)
+                .statusBarsPaddingIfNeeded(screen as? IInsetsConsumer)
+                .navigationBarsPaddingIfNeeded(screen as? IInsetsConsumer)
         ) {
             Surface(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
                     .semantics { testTagsAsResourceId = true }
-                    .testTag(destination::class.simpleName!!)
+                    .testTag(screen::class.simpleName!!)
                     .consumeWindowInsets(PaddingValues(bottom = consumePaddingDp))
                     .imePadding()
             ) {
-                destination.Content()
+                screen.Content()
             }
             val nav = Navigation.regular
             TabBar(
@@ -65,15 +65,15 @@ interface RootScreenWithTabs : RegularScreen {
                 tabs = tabs,
                 currentTab = currentTab,
                 onTabClick = {
-                    nav.replaceAll(it.data.destinationFactory())
+                    nav.replaceAll(it.data.screenFactory())
                 },
             )
         }
     }
 
     interface TabData {
-        val destinationFactory: () -> RegularScreen
-        val destinationClass: KClass<out RegularScreen>
+        val screenFactory: () -> RegularScreen
+        val screenClass: KClass<out RegularScreen>
     }
 }
 
