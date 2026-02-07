@@ -12,7 +12,7 @@ import kotlin.reflect.KClass
 
 @GraphExtension(ViewModelScope::class)
 interface ViewModelGraph {
-    @Multibinds
+    @Multibinds(allowEmpty = true)
     val viewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
 
     @Provides

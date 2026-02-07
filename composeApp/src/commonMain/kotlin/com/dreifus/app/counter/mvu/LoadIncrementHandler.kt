@@ -1,12 +1,12 @@
 package com.dreifus.app.counter.mvu
 
+import com.dreifus.app.counter.data.CounterRepository
 import com.yavorcool.mvucore.filteringHandler
-import kotlinx.coroutines.delay
 
-val LoadIncrementHandler =
+fun LoadIncrementHandler(repo: CounterRepository) =
     filteringHandler<CounterCommand.LoadIncrement, CounterCommand, CounterEvent>(
         cancelPreviousOnNewCommand = true,
     ) { command ->
-        delay(1000)
-        CounterEvent.AsyncResult(command.currentValue + 1)
+        val result = repo.incrementRemote(command.currentValue)
+        CounterEvent.AsyncResult(result)
     }

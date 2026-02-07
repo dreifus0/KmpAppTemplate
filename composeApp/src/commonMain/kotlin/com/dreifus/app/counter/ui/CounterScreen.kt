@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
@@ -19,32 +18,22 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.dreifus.app.counter.CounterViewModel
 import com.dreifus.app.counter.mvu.CounterEffect
 import com.dreifus.app.counter.mvu.CounterEvent
-import com.dreifus.app.counter.mvu.CounterState
-import com.dreifus.app.counter.mvu.CounterUpdate
-import com.dreifus.app.counter.mvu.LoadIncrementHandler
 import com.dreifus.navigation.ui.RootScreenWithTabs
+import com.dreifus.template.di.common.metro.viewmodel.metroViewModel
 import com.dreifus.template.uikit.style.AppTheme
-import com.yavorcool.mvucore.impl.Store
 
 class CounterScreen : RootScreenWithTabs {
 
     @Composable
     override fun Content() {
-        val scope = rememberCoroutineScope()
-        val store = remember {
-            Store<CounterState, CounterEvent, CounterEvent, _, _>(
-                initialState = CounterState(),
-                update = CounterUpdate,
-                commandHandlers = listOf(LoadIncrementHandler),
-            )
-        }
-        LaunchedEffect(store) { store.launch(scope) }
+        val viewModel = metroViewModel<CounterViewModel>()
+        val store = viewModel.store
 
         val state by store.state.collectAsState()
         val snackbarHostState = remember { SnackbarHostState() }
