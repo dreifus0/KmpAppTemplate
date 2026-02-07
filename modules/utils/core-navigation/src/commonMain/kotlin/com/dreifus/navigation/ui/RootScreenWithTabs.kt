@@ -32,8 +32,10 @@ import kotlin.reflect.KClass
 interface RootScreenWithTabs : RegularScreen {
     override fun <T : BaseScreen> navEntry() = navEntry<T> { screen ->
         val tabs = LocalTabs.current
-        val currentTab = remember(tabs, screen) {
-            tabs.find { it.data.screenClass == screen::class }
+        val tabNavState = LocalTabNavState.current
+        val currentTab = remember(tabs, tabNavState?.activeTabIndex, screen) {
+            tabNavState?.let { tabs.getOrNull(it.activeTabIndex) }
+                ?: tabs.find { it.data.screenClass == screen::class }
         }
         val localDensity = LocalDensity.current
         var consumePaddingDp by remember {
@@ -56,7 +58,6 @@ interface RootScreenWithTabs : RegularScreen {
                 screen.Content()
             }
             val nav = Navigation.regular
-            val tabNavState = LocalTabNavState.current
             TabBar(
                 modifier = Modifier.onGloballyPositioned { coordinates ->
                     consumePaddingDp = with(localDensity) { coordinates.size.height.toDp() }
