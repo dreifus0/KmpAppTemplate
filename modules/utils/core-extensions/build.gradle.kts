@@ -1,22 +1,18 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.compose.compiler)
+    id("com.dreifus.kmp-compose-library")
 }
 
 android {
     namespace = "com.dreifus.core.extensions"
-    configureAndroidCommon()
 }
 
-configureKotlinAndroid()
-
-dependencies {
-    // coroutines
-    implementation(libs.coroutines.core)
-    implementation(libs.coroutines.android)
-
-    api(platform(libs.compose.bom))
-    implementation(libs.compose.runtime)
-    implementation(libs.compose.ui)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.coroutines.core)
+            implementation(libs.compose.runtime)
+            implementation(libs.compose.ui)
+            implementation(libs.androidx.lifecycle.runtimeCompose)
+        }
+    }
 }

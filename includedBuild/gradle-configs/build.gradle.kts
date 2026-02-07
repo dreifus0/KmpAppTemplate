@@ -1,31 +1,24 @@
 plugins {
-    // workaround https://github.com/usefulness/easylauncher-gradle-plugin/issues/324
-    // also helps with the same problem with Firebase App Distribution
     `kotlin-dsl`
-    `groovy-gradle-plugin`
-    `kotlin-dsl-precompiled-script-plugins`
 }
 
 dependencies {
     compileOnly(libs.plugin.agp)
     compileOnly(libs.plugin.kotlin)
-    compileOnly(libs.plugin.ksp)
+    compileOnly(libs.plugin.compose.multiplatform)
+    compileOnly(libs.plugin.compose.compiler)
     implementation(projects.sharedConsts)
 }
 
 gradlePlugin {
     plugins {
-        register("androidApplication") {
-            id = "com.dreifus.android-app"
-            implementationClass = "com.dreifus.gradle.plugins.AndroidApplicationConventionPlugin"
+        register("kmpComposeLibrary") {
+            id = "com.dreifus.kmp-compose-library"
+            implementationClass = "com.dreifus.gradle.plugins.KmpComposeLibraryConventionPlugin"
         }
-        register("composeAndroidLibraryMaterial3") {
-            id = "com.dreifus.compose-android-library-material3"
-            implementationClass = "com.dreifus.gradle.plugins.ComposeAndroidLibraryMaterial3ConventionPlugin"
-        }
-        register("composeAndroidApplicationMaterial3") {
-            id = "com.dreifus.compose-android-application-material3"
-            implementationClass = "com.dreifus.gradle.plugins.ComposeAndroidApplicationMaterial3ConventionPlugin"
+        register("kmpComposeApplication") {
+            id = "com.dreifus.kmp-compose-application"
+            implementationClass = "com.dreifus.gradle.plugins.KmpComposeApplicationConventionPlugin"
         }
     }
 }
