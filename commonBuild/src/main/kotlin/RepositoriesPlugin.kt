@@ -18,6 +18,7 @@ fun RepositoryHandler.applyPluginsRepositories() {
 }
 
 fun RepositoryHandler.applyMainRepositories() {
+    mavenLocal()
     mavenCentralAndGoogle()
     jitpack()
 }

@@ -1,112 +1,70 @@
 [versions]
-plugins-agp = "8.13.2"
-kotlin = "2.2.20"
-ksp = "2.3.0"
+agp = "8.11.2"
+android-compileSdk = "36"
+android-minSdk = "24"
+android-targetSdk = "36"
+androidx-activity = "1.12.2"
+androidx-lifecycle = "2.9.6"
+composeMultiplatform = "1.10.0"
+kotlin = "2.3.0"
+material3 = "1.10.0-alpha05"
 coroutines = "1.10.1"
-
-# When updating composeBom, also update accompanist to use the same version of compose libraries
-# https://developer.android.com/jetpack/compose/bom/bom-mapping
-composeBom = "2025.08.00"
-
-appcompat = "1.7.1"
-lifecycle = "2.10.0"
-activity = "1.12.3"
-fragmentKtx = "1.6.1"
-androidX-coreKtx = "1.10.1"
-androidXNavigation = "2.7.0"
-androidXNavigation3 = "1.0.0"
-splashScreen = "1.0.1"
-
-material = "1.12.0"
-constraintLayout = "2.2.1"
-constraintLayoutCompose = "1.1.1"
-
-play-featureDelivery = '2.1.0'
-
-kotlinSerialization = "1.8.0"
-ktorfit = "2.7.1"
-ktor = "3.3.3"
-okhttp = "5.3.2"
-
 metro = "0.10.2"
-coreLibraryDesugaring = "2.0.4"
-
-mvuCore = "0.2.0"
+mvucore = "0.3.0"
+kotlinSerialization = "1.8.0"
+napier = "2.7.1"
+navigation3 = "1.0.0-alpha06"
+lifecycle-nav3 = "2.10.0-alpha06"
+ksp = "2.3.0-2.0.2"
 
 [libraries]
-# kotlin
-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm", version.ref = "coroutines" }
-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+compose-uiTooling = { module = "org.jetbrains.compose.ui:ui-tooling", version.ref = "composeMultiplatform" }
+compose-uiToolingPreview = { module = "org.jetbrains.compose.ui:ui-tooling-preview", version.ref = "composeMultiplatform" }
+compose-runtime = { module = "org.jetbrains.compose.runtime:runtime", version.ref = "composeMultiplatform" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "composeMultiplatform" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
+compose-ui = { module = "org.jetbrains.compose.ui:ui", version.ref = "composeMultiplatform" }
+compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "composeMultiplatform" }
+compose-materialIconsExtended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "composeMultiplatform" }
+androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 
-# androidx
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidX-coreKtx" }
-androidx-splashScreen = { module = "androidx.core:core-splashscreen", version.ref = "splashScreen" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
-androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
-androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
-androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
-androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
+# Coroutines
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 
-# navigation
-androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "androidXNavigation3" }
-androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "androidXNavigation3" }
-androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycle" }
-
-# compose
-# Dependencies are also used in ComposeConventionPlugins.kt
-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
-compose-runtime = { module = "androidx.compose.runtime:runtime" }
-compose-ui = { module = "androidx.compose.ui:ui" }
-compose-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
-compose-foundation = { module = "androidx.compose.foundation:foundation" }
-compose-material3 = { module = "androidx.compose.material3:material3" } # ui-kit
-compose-materialIconsExtended = { module = "androidx.compose.material:material-icons-extended" }
-compose-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
-compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "androidXNavigation" }
-compose-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle" }
-compose-constraint = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintLayoutCompose" }
-
-# material
-material = { module = "com.google.android.material:material", version.ref = "material" }
-androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintLayout" }
-
-# play
-play-featureDelivery = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "play-featureDelivery" }
-
-# network
-okhttp-okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
-okhttp-loggingInterceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+# Serialization
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 
-ktorfit-lib = { module = "de.jensklingenberg.ktorfit:ktorfit-lib", version.ref = "ktorfit" }
-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
-ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
-ktor-client-websockets = { module = "io.ktor:ktor-client-websockets", version.ref = "ktor" }
-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+# Material (for Icons)
+compose-material = { module = "org.jetbrains.compose.material:material", version.ref = "composeMultiplatform" }
 
-# other
-coreLibraryDesugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "coreLibraryDesugaring" }
-symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
-mvu-core = { module = "com.github.yavorcool:mvucore", version.ref = "mvuCore" }
+# MVU
+mvucore = { module = "com.github.yavorcool:mvucore-lib", version.ref = "mvucore" }
 
-# Plugin dependencies for convention plugins
+# Logging (KMP)
+napier = { module = "io.github.aakira:napier", version.ref = "napier" }
+
+# Navigation 3 (JetBrains multiplatform)
+navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "navigation3" }
+lifecycle-viewmodel-navigation3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycle-nav3" }
+
+# Plugin artifacts (for convention plugins in includedBuild)
+plugin-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-plugin-agp = { module = "com.android.tools.build:gradle", version.ref = "plugins-agp" }
-plugin-ksp = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+plugin-compose-multiplatform = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
+plugin-compose-compiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
+
+# KSP
+symbol-processing-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "plugins-agp" }
-android-library = { id = "com.android.library", version.ref = "plugins-agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
-ktorfit = { id = "de.jensklingenberg.ktorfit", version.ref = "ktorfit" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
