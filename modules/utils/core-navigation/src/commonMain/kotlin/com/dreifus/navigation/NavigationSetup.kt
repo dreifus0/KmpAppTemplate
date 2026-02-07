@@ -17,6 +17,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.dreifus.navigation.controller.LocalBottomSheetNavController
 import com.dreifus.navigation.controller.LocalDialogNavController
 import com.dreifus.navigation.controller.LocalRegularNavController
+import com.dreifus.navigation.controller.LocalTabNavState
 import com.dreifus.navigation.controller.NavControllersHolder
 import com.dreifus.navigation.screen.BaseScreen
 import com.dreifus.navigation.screen.bottomsheet.BottomSheetSceneStrategy
@@ -60,6 +61,7 @@ fun NavigationSetup(
         LocalRegularNavController provides navControllersHolder.regular,
         LocalDialogNavController provides navControllersHolder.dialog,
         LocalBottomSheetNavController provides navControllersHolder.bottomSheet,
+        LocalTabNavState provides navControllersHolder.tabNavState,
     ) {
         NavDisplay(
             backStack = backstack,
@@ -74,7 +76,23 @@ fun NavigationSetup(
                 when {
                     navControllersHolder.bottomSheet.backstack.isNotEmpty() -> navControllersHolder.bottomSheet.pop()
                     navControllersHolder.dialog.backstack.isNotEmpty() -> navControllersHolder.dialog.pop()
-                    else -> navControllersHolder.regular.pop()
+                    else -> {
+                        val tabState = navControllersHolder.tabNavState
+                        if (tabState != null) {
+                            val regular = navControllersHolder.regular
+                            val activeRootPos = regular.backstack.indexOf(tabState.activeRoot)
+                            when {
+                                activeRootPos < regular.backstack.size - 1 ->
+                                    regular.pop() // has inner screens → pop
+                                tabState.activeTabIndex != 0 ->
+                                    tabState.switchTab(regular, 0) // non-primary → go to primary
+                                else ->
+                                    regular.pop() // primary root → system back
+                            }
+                        } else {
+                            navControllersHolder.regular.pop()
+                        }
+                    }
                 }
             },
             transitionSpec = { noContentTransform },

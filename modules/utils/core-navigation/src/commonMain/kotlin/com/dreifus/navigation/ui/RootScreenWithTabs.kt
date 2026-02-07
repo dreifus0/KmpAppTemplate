@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.dreifus.navigation.IInsetsConsumer
+import com.dreifus.navigation.controller.LocalTabNavState
 import com.dreifus.navigation.controller.Navigation
 import com.dreifus.navigation.navigationBarsPaddingIfNeeded
 import com.dreifus.navigation.screen.BaseScreen
@@ -55,14 +56,24 @@ interface RootScreenWithTabs : RegularScreen {
                 screen.Content()
             }
             val nav = Navigation.regular
+            val tabNavState = LocalTabNavState.current
             TabBar(
                 modifier = Modifier.onGloballyPositioned { coordinates ->
                     consumePaddingDp = with(localDensity) { coordinates.size.height.toDp() }
                 },
                 tabs = tabs,
                 currentTab = currentTab,
-                onTabClick = {
-                    nav.replaceAll(it.data.screenFactory())
+                onTabClick = { clickedTab ->
+                    if (tabNavState != null) {
+                        val targetIndex = tabs.indexOf(clickedTab)
+                        if (targetIndex == tabNavState.activeTabIndex) {
+                            tabNavState.popToRoot(nav)
+                        } else {
+                            tabNavState.switchTab(nav, targetIndex)
+                        }
+                    } else {
+                        nav.replaceAll(clickedTab.data.screenFactory())
+                    }
                 },
             )
         }

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.dreifus.app.counter.CounterViewModel
 import com.dreifus.app.counter.mvu.CounterEffect
 import com.dreifus.app.counter.mvu.CounterEvent
+import com.dreifus.navigation.controller.Navigation
 import com.dreifus.navigation.ui.RootScreenWithTabs
 import com.dreifus.template.di.common.metro.viewmodel.metroViewModel
 import com.dreifus.template.uikit.style.AppTheme
@@ -82,6 +83,13 @@ class CounterScreen : RootScreenWithTabs {
                 if (state.isLoading) {
                     Spacer(modifier = Modifier.height(16.dp))
                     CircularProgressIndicator()
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                val nav = Navigation.regular
+                Button(onClick = { nav.navigate(CounterDetailScreen()) }) {
+                    Text("Open Detail")
                 }
             }
         }

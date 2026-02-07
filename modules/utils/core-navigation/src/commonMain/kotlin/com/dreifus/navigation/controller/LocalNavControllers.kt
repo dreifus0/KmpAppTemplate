@@ -20,6 +20,9 @@ val LocalDialogNavController: ProvidableCompositionLocal<NavController<DialogScr
 val LocalBottomSheetNavController: ProvidableCompositionLocal<NavController<BottomSheetScreen>> =
     staticCompositionLocalOf { error("LocalBottomSheetNavController is not provided") }
 
+val LocalTabNavState: ProvidableCompositionLocal<TabNavState?> =
+    staticCompositionLocalOf { null }
+
 object Navigation {
     val regular: NavController<RegularScreen>
         @Composable

@@ -9,8 +9,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.dreifus.app.counter.ui.CounterScreen
 import com.dreifus.app.navigation.mainTabs
+import com.dreifus.app.stub.ui.StubScreen
 import com.dreifus.navigation.NavigationSetup
 import com.dreifus.navigation.controller.NavControllersHolder
+import com.dreifus.navigation.controller.TabNavState
 import com.dreifus.navigation.ui.LocalTabs
 import com.dreifus.app.di.AppGraph
 import com.dreifus.template.di.common.metro.viewmodel.LocalMetroViewModelFactory
@@ -21,7 +23,13 @@ import com.dreifus.template.uikit.style.app.DefaultAppTheme
 
 @Composable
 fun App(
-    navControllersHolder: NavControllersHolder = NavControllersHolder(CounterScreen()),
+    navControllersHolder: NavControllersHolder = remember {
+        val tabNavState = TabNavState(
+            tabRoots = listOf(CounterScreen(), StubScreen()),
+            initialActiveIndex = 0,
+        )
+        NavControllersHolder(tabNavState = tabNavState)
+    },
 ) {
     val graph = remember { createGraph<AppGraph>().createActivityRetainedGraph() }
     val factory = remember { MetroViewModelFactory(graph) }
