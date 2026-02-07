@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.dreifus.navigation.screen.BaseScreen
-import com.dreifus.template.di.common.metro.viewmodel.metroViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import kotlin.reflect.KProperty1
 
 fun screenTrackingInfo(screenName: String, valueTeam: String): Map<String, String> {

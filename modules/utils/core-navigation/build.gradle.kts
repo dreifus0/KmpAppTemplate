@@ -13,7 +13,7 @@ kotlin {
         commonMain.dependencies {
             api(libs.navigation3.ui)
             api(libs.lifecycle.viewmodel.navigation3)
-            api(projects.modules.utils.diCommon)
+            api(libs.metrox.viewmodel.compose)
             implementation(projects.modules.utils.uikit)
             implementation(libs.kotlin.serialization)
         }

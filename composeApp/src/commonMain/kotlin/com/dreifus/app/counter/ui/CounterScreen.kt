@@ -26,7 +26,7 @@ import com.dreifus.app.counter.mvu.CounterEffect
 import com.dreifus.app.counter.mvu.CounterEvent
 import com.dreifus.navigation.controller.Navigation
 import com.dreifus.navigation.ui.RootScreenWithTabs
-import com.dreifus.template.di.common.metro.viewmodel.metroViewModel
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 import com.dreifus.template.uikit.style.AppTheme
 
 class CounterScreen : RootScreenWithTabs {

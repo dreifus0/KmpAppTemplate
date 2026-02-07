@@ -7,14 +7,14 @@ import com.dreifus.app.counter.mvu.CounterEvent
 import com.dreifus.app.counter.mvu.CounterState
 import com.dreifus.app.counter.mvu.CounterUpdate
 import com.dreifus.app.counter.mvu.LoadIncrementHandler
-import com.dreifus.template.di.common.metro.viewmodel.ViewModelKey
-import com.dreifus.template.di.common.metro.viewmodel.ViewModelScope
+import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
+import dev.zacsweers.metrox.viewmodel.ViewModelKey
 import com.yavorcool.mvucore.impl.Store
 
 @ViewModelKey(CounterViewModel::class)
-@ContributesIntoMap(ViewModelScope::class)
+@ContributesIntoMap(AppScope::class)
 @Inject
 class CounterViewModel(repo: CounterRepository) : ViewModel() {
     val store = Store<CounterState, CounterEvent, CounterEvent, _, _>(

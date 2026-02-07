@@ -42,7 +42,6 @@ kotlin {
 
             implementation(libs.mvucore)
 
-            implementation(projects.modules.utils.diCommon)
             implementation(projects.modules.utils.helpers)
             implementation(projects.modules.utils.coreExtensions)
             implementation(projects.modules.utils.uikit)

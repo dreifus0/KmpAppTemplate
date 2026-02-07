@@ -1,8 +1,8 @@
 package com.dreifus.app.di
 
-import com.dreifus.template.di.common.metro.activity.ActivityRetainedGraph
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metrox.viewmodel.ViewModelGraph
 
 @DependencyGraph(AppScope::class)
-interface AppGraph : ActivityRetainedGraph.Factory
+interface AppGraph : ViewModelGraph
