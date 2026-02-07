@@ -22,5 +22,10 @@ val CounterUpdate = Update<CounterState, CounterEvent, CounterCommand, CounterEf
             state = state.copy(count = event.newValue, isLoading = false),
             effect = CounterEffect.ShowMessage("Async increment done! New value: ${event.newValue}"),
         )
+
+        is CounterEvent.OpenDetail -> Next(
+            state = state,
+            effect = CounterEffect.NavigateToDetail,
+        )
     }
 }

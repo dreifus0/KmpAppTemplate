@@ -37,12 +37,14 @@ class CounterScreen : RootScreenWithTabs {
         val store = viewModel.store
 
         val state by store.state.collectAsState()
+        val nav = Navigation.regular
         val snackbarHostState = remember { SnackbarHostState() }
 
         LaunchedEffect(store) {
             store.effects.collect { effect ->
                 when (effect) {
                     is CounterEffect.ShowMessage -> snackbarHostState.showSnackbar(effect.message)
+                    is CounterEffect.NavigateToDetail -> nav.navigate(CounterDetailScreen())
                 }
             }
         }
@@ -87,8 +89,7 @@ class CounterScreen : RootScreenWithTabs {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                val nav = Navigation.regular
-                Button(onClick = { nav.navigate(CounterDetailScreen()) }) {
+                Button(onClick = { store.dispatch(CounterEvent.OpenDetail) }) {
                     Text("Open Detail")
                 }
             }

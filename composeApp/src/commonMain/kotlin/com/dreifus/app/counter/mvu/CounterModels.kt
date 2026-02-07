@@ -10,6 +10,7 @@ sealed interface CounterEvent {
     data object Decrement : CounterEvent
     data object AsyncIncrement : CounterEvent
     data class AsyncResult(val newValue: Int) : CounterEvent
+    data object OpenDetail : CounterEvent
 }
 
 sealed interface CounterCommand {
@@ -18,4 +19,5 @@ sealed interface CounterCommand {
 
 sealed interface CounterEffect {
     data class ShowMessage(val message: String) : CounterEffect
+    data object NavigateToDetail : CounterEffect
 }
