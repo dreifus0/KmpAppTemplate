@@ -13,7 +13,12 @@ The goal is to maximize code sharing between platforms. All business logic, navi
 | Material3 | 1.10.0-alpha05 | Design system |
 | Navigation 3 | 1.0.0-alpha06 | Screen navigation |
 | Metro DI | 0.10.2 | Dependency Injection |
+| MetroX ViewModel | 0.10.2 | Metro + ViewModel integration |
 | MVU Core | 0.3.0 | Model-View-Update architecture |
+| Coroutines | 1.10.1 | Async/concurrent execution |
+| Napier | 2.7.1 | KMP logging |
+| Kotlin Serialization | 1.8.0 | JSON serialization |
+| KSP | 2.3.0-2.0.2 | Kotlin Symbol Processing |
 | AGP | 8.11.2 | Android build |
 | Gradle | 8.14.3 | Build system |
 
@@ -25,6 +30,7 @@ KmpAppTemplate/
 │   ├── src/commonMain/                #   Shared code (UI, logic, navigation)
 │   │   └── kotlin/com/dreifus/app/
 │   │       ├── App.kt                 #     Root: theme + navigation + tabs
+│   │       ├── di/                    #     DI graph + RootViewModel
 │   │       ├── counter/               #     "Counter" feature (MVU example)
 │   │       │   ├── mvu/               #       State, Event, Update, Handler
 │   │       │   └── ui/                #       CounterScreen
@@ -37,10 +43,9 @@ KmpAppTemplate/
 │
 ├── modules/utils/                     # Reusable KMP modules
 │   ├── core-navigation/               #   Navigation (regular, dialog, bottomsheet, tabs)
-│   ├── di-common/                     #   DI infrastructure (Metro, ViewModel)
-│   ├── uikit/                         #   Design system (theme, components, icons)
+│   ├── uikit/                         #   Design system (theme, colors, typography, components)
 │   ├── helpers/                       #   Utilities (SnackbarManager)
-│   ├── core-extensions/               #   Kotlin extensions
+│   ├── core-extensions/               #   Kotlin/Compose extensions
 │   └── screen-collector/              #   KSP processor for navigation
 │
 ├── includedBuild/                     # Gradle convention plugins
@@ -56,8 +61,9 @@ KmpAppTemplate/
 - **Maximize shared code** — UI, navigation, DI and business logic all live in `commonMain`
 - **Minimize platform code** — only entry points (`MainActivity` / `MainViewController`)
 - **MVU (Model-View-Update)** — unidirectional data flow: State, Event, Command, Effect
+- **Metro DI** — `AppGraph` with `@Inject`, `@ContributesBinding`, `@ViewModelKey` for ViewModel injection via `metrox-viewmodel-compose`
 - **Feature-based structure** — each feature in its own package (`counter/`, `stub/`)
-- **Navigation 3 + tabs** — `RootScreenWithTabs` with bottom navigation
+- **Navigation 3 + tabs** — `RootScreenWithTabs` with bottom navigation, per-tab backstack, dialog/bottomsheet overlays
 
 ## Getting Started
 
