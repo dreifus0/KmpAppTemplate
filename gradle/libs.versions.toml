@@ -41,7 +41,7 @@ kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-j
 compose-material = { module = "org.jetbrains.compose.material:material", version.ref = "composeMultiplatform" }
 
 # MVU
-mvucore = { module = "com.github.yavorcool:mvucore-lib", version.ref = "mvucore" }
+mvucore = { module = "com.github.yavorcool.mvucore:mvucore-lib", version.ref = "mvucore" }
 
 # Logging (KMP)
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }

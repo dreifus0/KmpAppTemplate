@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
-val NotoFontFamily = FontFamily.Default
+val FontFamily = FontFamily.Default
 
 private val defaultLetterSpacing: TextUnit = (-0.007).em
 

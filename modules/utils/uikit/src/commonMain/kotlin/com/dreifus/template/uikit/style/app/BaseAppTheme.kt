@@ -7,7 +7,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import com.dreifus.template.uikit.style.AppColors
 import com.dreifus.template.uikit.style.AppTheme
 import com.dreifus.template.uikit.style.AppTypography
-import com.dreifus.template.uikit.style.NotoFontFamily
+import com.dreifus.template.uikit.style.FontFamily
 import com.dreifus.template.uikit.style.ThemedParamsMap
 
 abstract class SpecificAppTheme {
@@ -31,7 +31,7 @@ abstract class SpecificAppTheme {
         ) {
             AppTheme(
                 colors = colors,
-                typography = AppTypography(NotoFontFamily),
+                typography = AppTypography(FontFamily),
                 themedParams = themedParams,
                 content = content
             )
