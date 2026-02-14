@@ -16,6 +16,7 @@ rootProject.name = "KmpTemplateApp"
 
 include(":composeApp")
 include(
+    ":modules:utils:arch",
     ":modules:utils:helpers",
     ":modules:utils:core-extensions",
     ":modules:utils:uikit",

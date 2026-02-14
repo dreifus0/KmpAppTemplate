@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -24,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import com.dreifus.app.counter.CounterViewModel
 import com.dreifus.app.counter.mvu.CounterEffect
 import com.dreifus.app.counter.mvu.CounterEvent
+import com.dreifus.arch.lce.LceState
+import com.dreifus.arch.lce.isLoading
 import com.dreifus.navigation.controller.Navigation
 import com.dreifus.navigation.ui.RootScreenWithTabs
 import dev.zacsweers.metrox.viewmodel.metroViewModel
@@ -59,11 +62,27 @@ class CounterScreen : RootScreenWithTabs {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
-                Text(
-                    text = "Count: ${state.count}",
-                    style = AppTheme.typography.headlineLarge,
-                    color = AppTheme.colors.contentPrimary,
-                )
+                when (val countState = state.countState) {
+                    is LceState.Loading -> {
+                        CircularProgressIndicator()
+                    }
+
+                    is LceState.Content -> {
+                        Text(
+                            text = "Count: ${countState.value}",
+                            style = AppTheme.typography.headlineLarge,
+                            color = AppTheme.colors.contentPrimary,
+                        )
+                    }
+
+                    is LceState.Error -> {
+                        Text(
+                            text = "Error: ${countState.error?.message ?: "Unknown error"}",
+                            style = AppTheme.typography.headlineLarge,
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -76,15 +95,10 @@ class CounterScreen : RootScreenWithTabs {
                     }
                     Button(
                         onClick = { store.dispatch(CounterEvent.AsyncIncrement) },
-                        enabled = !state.isLoading,
+                        enabled = !state.countState.isLoading,
                     ) {
                         Text("Async +1")
                     }
-                }
-
-                if (state.isLoading) {
-                    Spacer(modifier = Modifier.height(16.dp))
-                    CircularProgressIndicator()
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))

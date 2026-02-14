@@ -7,6 +7,10 @@ fun LoadIncrementHandler(repo: CounterRepository) =
     filteringHandler<CounterCommand.LoadIncrement, CounterCommand, CounterEvent>(
         cancelPreviousOnNewCommand = true,
     ) { command ->
-        val result = repo.incrementRemote(command.currentValue)
-        CounterEvent.AsyncResult(result)
+        try {
+            val result = repo.incrementRemote(command.currentValue)
+            CounterEvent.AsyncResult(result)
+        } catch (e: Exception) {
+            CounterEvent.AsyncError(e)
+        }
     }
