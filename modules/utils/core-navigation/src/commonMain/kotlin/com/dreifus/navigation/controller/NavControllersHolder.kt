@@ -9,8 +9,16 @@ class NavControllersHolder(
     val tabNavState: TabNavState? = null,
 ) {
     val regular: NavController<RegularScreen> = when {
-        tabNavState != null -> NavController(*tabNavState.buildInitialBackstack().toTypedArray())
-        rootScreen != null -> NavController(rootScreen)
+        tabNavState != null -> NavController(
+            *tabNavState.buildInitialBackstack().toTypedArray(),
+            isEmptyBackstackPossible = false
+        )
+
+        rootScreen != null -> NavController(
+            rootScreen,
+            isEmptyBackstackPossible = false
+        )
+
         else -> error("Either rootScreen or tabNavState must be provided")
     }
     val dialog = NavController<DialogScreen>(filterNavigationToSameClass = true)

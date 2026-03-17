@@ -9,6 +9,7 @@ class NavController<T : BaseScreen>(
     vararg screens: T,
     /** Prevents navigation to a screen with the same class as the current one. Relevant for overlays. */
     private val filterNavigationToSameClass: Boolean = false,
+    private val isEmptyBackstackPossible: Boolean = true,
 ) {
     val backstack = mutableStateListOf(*screens)
 
@@ -22,15 +23,20 @@ class NavController<T : BaseScreen>(
         }
     }
 
-    fun replaceLast(screen: T): Boolean {
+    fun replaceLast(screen: T) {
         if (backstack.isNotEmpty()) {
             backstack[backstack.size - 1] = screen
-            return true
+        } else {
+            if (!isEmptyBackstackPossible) {
+                println("NavController.replaceLast: Invoke on empty backstack")
+            }
         }
-        return false
     }
 
     fun replaceAll(screens: List<T>) {
+        if (screens.isEmpty() && !isEmptyBackstackPossible) {
+            println("NavController.replaceAll: destinations list is empty")
+        }
         backstack.clear()
         backstack.addAll(screens)
     }
@@ -39,20 +45,26 @@ class NavController<T : BaseScreen>(
         replaceAll(listOf(screen))
     }
 
-    fun pop(): Boolean {
-        if (backstack.isNotEmpty()) {
-            backstack.removeLastOrNull()
-            return true
+    fun pop() {
+        when {
+            !isEmptyBackstackPossible && backstack.isEmpty() ->
+                println("NavController.pop: Invoke on empty backstack")
+
+            !isEmptyBackstackPossible && backstack.size == 1 ->
+                println("NavController.pop: Can't pop last item")
+
+            else -> backstack.removeLastOrNull()
         }
-        return false
     }
 
-    fun popAll(): Boolean {
+    fun popAll() {
         if (backstack.isNotEmpty()) {
             backstack.removeRange(1, backstack.size)
-            return true
+        } else {
+            if (!isEmptyBackstackPossible) {
+                println("NavController.popAll: Invoke on empty backstack")
+            }
         }
-        return false
     }
 
     /**
@@ -64,15 +76,20 @@ class NavController<T : BaseScreen>(
         inclusive: Boolean = false,
         toFirst: Boolean = false,
         predicate: (T) -> Boolean,
-    ): Boolean {
+    ) {
         val index =
             if (toFirst) backstack.indexOfFirst(predicate) else backstack.indexOfLast(predicate)
-        if (index != -1) {
-            val correctedIndex = if (inclusive) index else index + 1
-            backstack.removeRange(correctedIndex, backstack.size)
-            return true
+        when {
+            backstack.isEmpty() -> println("NavController.popUpTo: Invoke on empty backstack")
+            index == -1 -> println("NavController.popUpTo: Destination doesn't exist")
+            !isEmptyBackstackPossible && backstack.size == 1 ->
+                println("NavController.popUpTo: Can't pop last item")
+
+            else -> {
+                val correctedIndex = if (inclusive) index else index + 1
+                backstack.removeRange(correctedIndex, backstack.size)
+            }
         }
-        return false
     }
 
     /**
@@ -89,20 +106,23 @@ class NavController<T : BaseScreen>(
      * @param [toFirst] specifies the policy of selecting the target item in case of multiple matching
      * items. By default, the last matching item from the start of the backstack will be considered
      * the point up to which to replace.
-     *
-     * @return `true` - if the item matching the predicate was found, `false` - otherwise
      */
     fun replaceUpTo(
         newScreens: List<T>,
         inclusive: Boolean = false,
         toFirst: Boolean = false,
         predicate: (T) -> Boolean,
-    ): Boolean {
-        if (popUpTo(inclusive, toFirst, predicate)) {
-            backstack.addAll(newScreens)
-            return true
+    ) {
+        val index =
+            if (toFirst) backstack.indexOfFirst(predicate) else backstack.indexOfLast(predicate)
+        when {
+            index == -1 -> println("NavController.replaceUpTo: Destination doesn't exist")
+            else -> {
+                val correctedIndex = if (inclusive) index else index + 1
+                backstack.removeRange(correctedIndex, backstack.size)
+                backstack.addAll(newScreens)
+            }
         }
-        return false
     }
 
     /**
@@ -114,13 +134,11 @@ class NavController<T : BaseScreen>(
      * @param [toFirst] specifies the policy of selecting the target item in case of multiple matching
      * items. By default, the last matching item from the start of the backstack will be considered
      * the point up to which to replace.
-     *
-     * @return `true` - if the item matching the predicate was found, `false` - otherwise
      */
     fun replaceUpTo(
         newScreen: T,
         inclusive: Boolean = false,
         toFirst: Boolean = false,
         predicate: (T) -> Boolean,
-    ): Boolean = replaceUpTo(listOf(newScreen), inclusive, toFirst, predicate)
+    ) = replaceUpTo(listOf(newScreen), inclusive, toFirst, predicate)
 }
