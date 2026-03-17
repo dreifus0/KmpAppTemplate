@@ -40,13 +40,12 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
-            implementation(libs.mvucore)
-
-            implementation(projects.modules.utils.arch)
             implementation(projects.modules.utils.helpers)
             implementation(projects.modules.utils.coreExtensions)
             implementation(projects.modules.utils.uikit)
             implementation(projects.modules.utils.coreNavigation)
+            implementation(projects.modules.features.counter)
+            implementation(projects.modules.features.stub)
         }
     }
 }

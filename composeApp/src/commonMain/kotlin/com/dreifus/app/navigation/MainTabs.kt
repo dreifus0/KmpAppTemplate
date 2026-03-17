@@ -6,8 +6,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
-import com.dreifus.app.counter.ui.CounterScreen
-import com.dreifus.app.stub.ui.StubScreen
+import com.dreifus.app.features.counter.ui.CounterScreen
+import com.dreifus.app.features.stub.ui.StubScreen
 import com.dreifus.navigation.screen.regular.RegularScreen
 import com.dreifus.navigation.ui.RootScreenWithTabs
 import com.dreifus.template.uikit.tabs.TabInfo

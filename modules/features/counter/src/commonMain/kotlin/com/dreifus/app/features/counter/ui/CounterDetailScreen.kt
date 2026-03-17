@@ -1,4 +1,4 @@
-package com.dreifus.app.stub.ui
+package com.dreifus.app.features.counter.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,10 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.dreifus.navigation.controller.Navigation
-import com.dreifus.navigation.ui.RootScreenWithTabs
+import com.dreifus.navigation.screen.regular.RegularScreen
 import com.dreifus.template.uikit.style.AppTheme
 
-class StubDetailsScreen : RootScreenWithTabs {
+class CounterDetailScreen : RegularScreen {
 
     @Composable
     override fun Content() {
@@ -25,15 +25,9 @@ class StubDetailsScreen : RootScreenWithTabs {
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
-                text = "Stub Details",
+                text = "Counter Detail",
                 style = AppTheme.typography.headlineLarge,
                 color = AppTheme.colors.contentPrimary,
-            )
-            Text(
-                text = "Tab bar is still visible!",
-                modifier = Modifier.padding(top = 8.dp),
-                style = AppTheme.typography.bodyLarge,
-                color = AppTheme.colors.contentSecondary,
             )
             Button(
                 modifier = Modifier.padding(top = 24.dp),

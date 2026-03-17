@@ -20,5 +20,9 @@ gradlePlugin {
             id = "com.dreifus.kmp-compose-application"
             implementationClass = "com.dreifus.gradle.plugins.KmpComposeApplicationConventionPlugin"
         }
+        register("kmpLibrary") {
+            id = "com.dreifus.kmp-library"
+            implementationClass = "com.dreifus.gradle.plugins.KmpLibraryConventionPlugin"
+        }
     }
 }

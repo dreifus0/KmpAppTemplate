@@ -1,4 +1,4 @@
-package com.dreifus.app.counter.ui
+package com.dreifus.app.features.counter.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,9 +22,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.dreifus.app.counter.CounterViewModel
-import com.dreifus.app.counter.mvu.CounterEffect
-import com.dreifus.app.counter.mvu.CounterEvent
+import com.dreifus.app.features.counter.CounterViewModel
+import com.dreifus.app.features.counter.mvu.CounterEffect
+import com.dreifus.app.features.counter.mvu.CounterEvent
 import com.dreifus.arch.lce.LceState
 import com.dreifus.arch.lce.isLoading
 import com.dreifus.navigation.controller.Navigation

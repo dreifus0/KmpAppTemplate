@@ -1,4 +1,4 @@
-package com.dreifus.app.stub.ui
+package com.dreifus.app.features.stub.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

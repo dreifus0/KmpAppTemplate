@@ -1,4 +1,4 @@
-package com.dreifus.app.counter.mvu
+package com.dreifus.app.features.counter.mvu
 
 import com.dreifus.arch.lce.LceState
 

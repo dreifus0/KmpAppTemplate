@@ -1,23 +1,22 @@
-package com.dreifus.app.counter
+package com.dreifus.app.features.counter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dreifus.app.counter.data.CounterRepository
-import com.dreifus.app.counter.mvu.CounterEvent
-import com.dreifus.app.counter.mvu.CounterState
-import com.dreifus.app.counter.mvu.CounterUpdate
-import com.dreifus.app.counter.mvu.LoadIncrementHandler
+import com.dreifus.app.features.counter.mvu.CounterState
+import com.dreifus.app.features.counter.mvu.CounterUpdate
+import com.dreifus.app.features.counter.mvu.LoadIncrementHandler
+import com.yavorcool.mvucore.impl.Store
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import dev.zacsweers.metrox.viewmodel.ViewModelKey
-import com.yavorcool.mvucore.impl.Store
 
+@Inject
 @ViewModelKey(CounterViewModel::class)
 @ContributesIntoMap(AppScope::class)
-@Inject
 class CounterViewModel(repo: CounterRepository) : ViewModel() {
-    val store = Store<CounterState, CounterEvent, CounterEvent, _, _>(
+    val store = Store(
         initialState = CounterState(),
         update = CounterUpdate,
         commandHandlers = listOf(LoadIncrementHandler(repo)),
