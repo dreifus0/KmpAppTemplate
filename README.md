@@ -44,9 +44,8 @@ KmpAppTemplate/
 ├── modules/utils/                     # Reusable KMP modules
 │   ├── core-navigation/               #   Navigation (regular, dialog, bottomsheet, tabs)
 │   ├── uikit/                         #   Design system (theme, colors, typography, components)
-│   ├── helpers/                       #   Utilities (SnackbarManager)
-│   ├── core-extensions/               #   Kotlin/Compose extensions
-│   └── screen-collector/              #   KSP processor for navigation
+│   ├── helpers/                       #   Utilities
+│   └── core-extensions/               #   Kotlin/Compose extensions
 │
 ├── includedBuild/                     # Gradle convention plugins
 │   ├── gradle-configs/                #   KMP Compose Application/Library plugins
