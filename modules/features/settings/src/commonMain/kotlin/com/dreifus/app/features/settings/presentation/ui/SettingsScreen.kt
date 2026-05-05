@@ -1,27 +1,24 @@
 package com.dreifus.app.features.settings.presentation.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.dreifus.app.features.settings.presentation.SettingsEvent
+import com.dreifus.app.features.settings.presentation.SettingsViewModel
 import com.dreifus.navigation.ui.RootScreenWithTabs
-import com.dreifus.template.uikit.style.AppTheme
+import dev.zacsweers.metrox.viewmodel.metroViewModel
 
 class SettingsScreen : RootScreenWithTabs {
 
     @Composable
     override fun Content() {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                text = "Settings",
-                style = AppTheme.typography.headlineLarge,
-                color = AppTheme.colors.contentPrimary,
-            )
-        }
+        val viewModel = metroViewModel<SettingsViewModel>()
+        val state by viewModel.state.collectAsState()
+
+        SettingsContent(
+            state = state,
+            onThemeSelected = { mode -> viewModel.dispatch(SettingsEvent.ThemeSelected(mode)) },
+            onResetOnboarding = { viewModel.dispatch(SettingsEvent.ResetOnboardingClicked) },
+        )
     }
 }
