@@ -23,7 +23,7 @@ class AppViewModel(platformDeps: PlatformDependencies) : ViewModel() {
     val factory: MetroViewModelFactory = graph.metroViewModelFactory
 
     private val store = Store<AppState, AppEvent, AppEvent, AppCommand, AppEffect>(
-        initialState = AppState(),
+        initialState = AppState(themeMode = graph.themeRepository.themeMode.value),
         update = AppUpdate(),
         commandHandlers = listOf(
             checkOnboardingStatusHandler(graph.onboardingRepository),
@@ -39,6 +39,12 @@ class AppViewModel(platformDeps: PlatformDependencies) : ViewModel() {
         viewModelScope.launch {
             graph.onboardingRepository.onboardingReset.collect {
                 dispatch(AppEvent.ShowOnboarding)
+            }
+        }
+
+        viewModelScope.launch {
+            graph.themeRepository.themeMode.collect { mode ->
+                dispatch(AppEvent.ThemeModeChanged(mode))
             }
         }
     }

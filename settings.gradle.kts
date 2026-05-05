@@ -26,4 +26,5 @@ include(
     ":modules:features:counter",
     ":modules:features:stub",
     ":modules:features:onboarding",
+    ":modules:features:settings",
 )

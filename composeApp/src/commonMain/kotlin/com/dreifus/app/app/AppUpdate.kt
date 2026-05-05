@@ -25,5 +25,9 @@ class AppUpdate : Update<AppState, AppEvent, AppCommand, AppEffect> {
         AppEvent.OnboardingCompleted -> Next(
             state = state.copy(screen = AppState.Screen.Root),
         )
+
+        is AppEvent.ThemeModeChanged -> Next(
+            state = state.copy(themeMode = event.mode),
+        )
     }
 }

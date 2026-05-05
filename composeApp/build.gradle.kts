@@ -51,6 +51,7 @@ kotlin {
             implementation(projects.modules.features.counter)
             implementation(projects.modules.features.stub)
             implementation(projects.modules.features.onboarding)
+            implementation(projects.modules.features.settings)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

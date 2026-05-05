@@ -14,6 +14,7 @@ import com.dreifus.app.app.AppState
 import com.dreifus.app.app.AppViewModel
 import com.dreifus.app.di.PlatformDependencies
 import com.dreifus.app.features.onboarding.presentation.ui.OnboardingScreen
+import com.dreifus.app.features.settings.data.ThemeMode
 import com.dreifus.app.root.RootScreen
 import com.dreifus.template.uikit.style.AppTheme
 import com.dreifus.template.uikit.style.app.DefaultAppTheme
@@ -24,7 +25,13 @@ fun App(platformDependencies: PlatformDependencies) {
     val appViewModel = viewModel { AppViewModel(platformDependencies) }
     val appState by appViewModel.state.collectAsState()
 
-    DefaultAppTheme(darkTheme = isSystemInDarkTheme()) {
+    val isDark = when (appState.themeMode) {
+        ThemeMode.Light -> false
+        ThemeMode.Dark -> true
+        ThemeMode.System -> isSystemInDarkTheme()
+    }
+
+    DefaultAppTheme(darkTheme = isDark) {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = AppTheme.colors.backgroundBase,

@@ -1,6 +1,7 @@
 package com.dreifus.app.di
 
 import com.dreifus.app.features.onboarding.data.OnboardingRepository
+import com.dreifus.app.features.settings.data.ThemeRepository
 import com.dreifus.arch.di.IsDebug
 import com.dreifus.arch.di.PlatformName
 import com.russhwolf.settings.Settings
@@ -13,6 +14,7 @@ import dev.zacsweers.metrox.viewmodel.ViewModelGraph
 interface AppGraph : ViewModelGraph {
 
     val onboardingRepository: OnboardingRepository
+    val themeRepository: ThemeRepository
 
     @DependencyGraph.Factory
     fun interface Factory {
