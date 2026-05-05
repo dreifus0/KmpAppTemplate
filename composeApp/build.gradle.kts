@@ -44,6 +44,7 @@ kotlin {
             implementation(libs.multiplatform.settings)
             implementation(libs.coil.compose)
             implementation(libs.coil.network.ktor3)
+            implementation(libs.napier)
 
             implementation(projects.modules.utils.arch)
             implementation(projects.modules.utils.helpers)

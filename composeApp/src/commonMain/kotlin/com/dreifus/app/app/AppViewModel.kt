@@ -12,6 +12,8 @@ import com.dreifus.network.createHttpClient
 import com.yavorcool.mvucore.impl.Store
 import dev.zacsweers.metro.createGraphFactory
 import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 
 class AppViewModel(platformDeps: PlatformDependencies) : ViewModel() {
@@ -41,6 +43,8 @@ class AppViewModel(platformDeps: PlatformDependencies) : ViewModel() {
     val state = store.state
 
     init {
+        if (platformDeps.isDebug) Napier.base(DebugAntilog())
+
         store.launch(viewModelScope)
         dispatch(AppEvent.Init)
 
