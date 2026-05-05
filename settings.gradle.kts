@@ -22,9 +22,8 @@ include(
     ":modules:utils:uikit",
     ":modules:utils:core-navigation",
     ":modules:utils:network",
-    ":modules:data:counter",
-    ":modules:features:counter",
-    ":modules:features:stub",
+    ":modules:data:pokemon",
     ":modules:features:onboarding",
     ":modules:features:settings",
+    ":modules:features:pokemon",
 )

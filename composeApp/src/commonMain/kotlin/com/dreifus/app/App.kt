@@ -9,6 +9,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.ImageLoader
+import coil3.compose.setSingletonImageLoaderFactory
+import coil3.network.ktor3.KtorNetworkFetcherFactory
 import com.dreifus.app.app.AppEvent
 import com.dreifus.app.app.AppState
 import com.dreifus.app.app.AppViewModel
@@ -22,6 +25,12 @@ import dev.zacsweers.metrox.viewmodel.LocalMetroViewModelFactory
 
 @Composable
 fun App(platformDependencies: PlatformDependencies) {
+    setSingletonImageLoaderFactory { context ->
+        ImageLoader.Builder(context)
+            .components { add(KtorNetworkFetcherFactory()) }
+            .build()
+    }
+
     val appViewModel = viewModel { AppViewModel(platformDependencies) }
     val appState by appViewModel.state.collectAsState()
 

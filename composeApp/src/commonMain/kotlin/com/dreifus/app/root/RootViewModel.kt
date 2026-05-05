@@ -1,8 +1,8 @@
 package com.dreifus.app.root
 
 import androidx.lifecycle.ViewModel
-import com.dreifus.app.features.counter.ui.CounterScreen
-import com.dreifus.app.features.stub.ui.StubScreen
+import com.dreifus.app.features.pokemon.presentation.list.ui.PokemonListScreen
+import com.dreifus.app.features.settings.presentation.ui.SettingsScreen
 import com.dreifus.navigation.controller.NavControllersHolder
 import com.dreifus.navigation.controller.TabNavState
 import dev.zacsweers.metro.AppScope
@@ -17,7 +17,7 @@ class RootViewModel : ViewModel() {
 
     val navControllersHolder = NavControllersHolder(
         tabNavState = TabNavState(
-            tabRoots = listOf(CounterScreen(), StubScreen()),
+            tabRoots = listOf(PokemonListScreen(), SettingsScreen()),
             initialActiveIndex = 0,
         ),
     )

@@ -18,6 +18,7 @@ lifecycle-nav3 = "2.10.0-alpha06"
 ksp = "2.3.0-2.0.2"
 ktor = "3.4.0"
 multiplatform-settings = "1.2.0"
+coil = "3.0.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -75,6 +76,10 @@ ktor-client-logging               = { module = "io.ktor:ktor-client-logging", ve
 # Settings (KMP key-value)
 multiplatform-settings            = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatform-settings" }
 multiplatform-settings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "multiplatform-settings" }
+
+# Coil (KMP image loading)
+coil-compose                      = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor3                = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

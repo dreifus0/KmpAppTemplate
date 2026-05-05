@@ -42,16 +42,18 @@ kotlin {
             implementation(libs.mvucore)
             implementation(libs.metrox.viewmodel.compose)
             implementation(libs.multiplatform.settings)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network.ktor3)
 
             implementation(projects.modules.utils.arch)
             implementation(projects.modules.utils.helpers)
             implementation(projects.modules.utils.coreExtensions)
             implementation(projects.modules.utils.uikit)
             implementation(projects.modules.utils.coreNavigation)
-            implementation(projects.modules.features.counter)
-            implementation(projects.modules.features.stub)
+            implementation(projects.modules.utils.network)
             implementation(projects.modules.features.onboarding)
             implementation(projects.modules.features.settings)
+            implementation(projects.modules.features.pokemon)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -7,6 +7,8 @@ import com.dreifus.app.di.AppGraph
 import com.dreifus.app.di.PlatformDependencies
 import com.dreifus.arch.di.IsDebug
 import com.dreifus.arch.di.PlatformName
+import com.dreifus.network.ApiConfig
+import com.dreifus.network.createHttpClient
 import com.yavorcool.mvucore.impl.Store
 import dev.zacsweers.metro.createGraphFactory
 import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
@@ -18,6 +20,12 @@ class AppViewModel(platformDeps: PlatformDependencies) : ViewModel() {
         settings = platformDeps.settings,
         isDebug = IsDebug(platformDeps.isDebug),
         platformName = PlatformName(platformDeps.platformName),
+        httpClient = createHttpClient(
+            ApiConfig(
+                baseUrl = ApiConstants.BASE_URL,
+                isDebug = platformDeps.isDebug,
+            ),
+        ),
     )
 
     val factory: MetroViewModelFactory = graph.metroViewModelFactory

@@ -9,6 +9,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metrox.viewmodel.ViewModelGraph
+import io.ktor.client.HttpClient
 
 @DependencyGraph(AppScope::class)
 interface AppGraph : ViewModelGraph {
@@ -22,6 +23,7 @@ interface AppGraph : ViewModelGraph {
             @Provides settings: Settings,
             @Provides isDebug: IsDebug,
             @Provides platformName: PlatformName,
+            @Provides httpClient: HttpClient,
         ): AppGraph
     }
 }
