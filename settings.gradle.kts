@@ -21,6 +21,7 @@ include(
     ":modules:utils:core-extensions",
     ":modules:utils:uikit",
     ":modules:utils:core-navigation",
+    ":modules:utils:network",
     ":modules:data:counter",
     ":modules:features:counter",
     ":modules:features:stub",
