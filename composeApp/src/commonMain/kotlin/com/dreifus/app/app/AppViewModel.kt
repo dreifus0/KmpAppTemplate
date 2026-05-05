@@ -2,6 +2,7 @@ package com.dreifus.app.app
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dreifus.app.app.commandhandlers.checkOnboardingStatusHandler
 import com.dreifus.app.di.AppGraph
 import com.dreifus.app.di.PlatformDependencies
 import com.dreifus.arch.di.IsDebug
@@ -9,6 +10,7 @@ import com.dreifus.arch.di.PlatformName
 import com.yavorcool.mvucore.impl.Store
 import dev.zacsweers.metro.createGraphFactory
 import dev.zacsweers.metrox.viewmodel.MetroViewModelFactory
+import kotlinx.coroutines.launch
 
 class AppViewModel(platformDeps: PlatformDependencies) : ViewModel() {
 
@@ -23,7 +25,9 @@ class AppViewModel(platformDeps: PlatformDependencies) : ViewModel() {
     private val store = Store<AppState, AppEvent, AppEvent, AppCommand, AppEffect>(
         initialState = AppState(),
         update = AppUpdate(),
-        commandHandlers = emptyList(),
+        commandHandlers = listOf(
+            checkOnboardingStatusHandler(graph.onboardingRepository),
+        ),
     )
 
     val state = store.state
@@ -31,6 +35,12 @@ class AppViewModel(platformDeps: PlatformDependencies) : ViewModel() {
     init {
         store.launch(viewModelScope)
         dispatch(AppEvent.Init)
+
+        viewModelScope.launch {
+            graph.onboardingRepository.onboardingReset.collect {
+                dispatch(AppEvent.ShowOnboarding)
+            }
+        }
     }
 
     fun dispatch(event: AppEvent) = store.dispatch(event)

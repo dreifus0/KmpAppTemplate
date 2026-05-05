@@ -50,6 +50,7 @@ kotlin {
             implementation(projects.modules.utils.coreNavigation)
             implementation(projects.modules.features.counter)
             implementation(projects.modules.features.stub)
+            implementation(projects.modules.features.onboarding)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
