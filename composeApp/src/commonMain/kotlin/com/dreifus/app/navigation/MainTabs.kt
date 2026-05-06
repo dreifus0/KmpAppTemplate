@@ -6,8 +6,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
-import com.dreifus.app.features.counter.ui.CounterScreen
-import com.dreifus.app.features.stub.ui.StubScreen
+import com.dreifus.app.features.pokemon.presentation.list.ui.PokemonListScreen
+import com.dreifus.app.features.settings.presentation.ui.SettingsScreen
 import com.dreifus.navigation.screen.regular.RegularScreen
 import com.dreifus.navigation.ui.RootScreenWithTabs
 import com.dreifus.template.uikit.tabs.TabInfo
@@ -17,76 +17,56 @@ enum class HomeTabs(
     override val screenFactory: () -> RegularScreen,
     override val screenClass: KClass<out RegularScreen>,
 ) : RootScreenWithTabs.TabData {
-    Counter(screenFactory = ::CounterScreen, screenClass = CounterScreen::class),
-    Stub(screenFactory = ::StubScreen, screenClass = StubScreen::class),
+    Pokemon(screenFactory = ::PokemonListScreen, screenClass = PokemonListScreen::class),
+    Settings(screenFactory = ::SettingsScreen, screenClass = SettingsScreen::class),
 }
 
 val mainTabs: List<TabInfo<RootScreenWithTabs.TabData>> = listOf(
     TabInfo(
-        icon = { rememberVectorPainter(CounterIcon) },
-        title = { "Counter" },
-        data = HomeTabs.Counter,
+        icon = { rememberVectorPainter(ListIcon) },
+        title = { "Pokémon" },
+        data = HomeTabs.Pokemon,
     ),
     TabInfo(
-        icon = { rememberVectorPainter(InfoIcon) },
-        title = { "Stub" },
-        data = HomeTabs.Stub,
+        icon = { rememberVectorPainter(SettingsIcon) },
+        title = { "Settings" },
+        data = HomeTabs.Settings,
     ),
 )
 
-// Material "Add" icon
-private val CounterIcon: ImageVector by lazy {
+private val ListIcon: ImageVector by lazy {
     ImageVector.Builder(
-        name = "Counter",
+        name = "List",
         defaultWidth = 24.dp,
         defaultHeight = 24.dp,
         viewportWidth = 24f,
         viewportHeight = 24f,
     ).apply {
         path(fill = SolidColor(Color.Black)) {
-            moveTo(19f, 13f)
-            horizontalLineTo(13f)
-            verticalLineTo(19f)
-            horizontalLineTo(11f)
-            verticalLineTo(13f)
-            horizontalLineTo(5f)
-            verticalLineTo(11f)
-            horizontalLineTo(11f)
-            verticalLineTo(5f)
-            horizontalLineTo(13f)
-            verticalLineTo(11f)
-            horizontalLineTo(19f)
-            close()
+            moveTo(3f, 6f); lineTo(21f, 6f); lineTo(21f, 8f); lineTo(3f, 8f); close()
+            moveTo(3f, 11f); lineTo(21f, 11f); lineTo(21f, 13f); lineTo(3f, 13f); close()
+            moveTo(3f, 16f); lineTo(21f, 16f); lineTo(21f, 18f); lineTo(3f, 18f); close()
         }
     }.build()
 }
 
-// Material "Info" icon
-private val InfoIcon: ImageVector by lazy {
+private val SettingsIcon: ImageVector by lazy {
     ImageVector.Builder(
-        name = "Info",
+        name = "Settings",
         defaultWidth = 24.dp,
         defaultHeight = 24.dp,
         viewportWidth = 24f,
         viewportHeight = 24f,
     ).apply {
         path(fill = SolidColor(Color.Black)) {
-            moveTo(12f, 2f)
-            curveTo(6.48f, 2f, 2f, 6.48f, 2f, 12f)
-            reflectiveCurveTo(4.48f, 10f, 12f, 22f)
-            reflectiveCurveTo(22f, 17.52f, 22f, 12f)
-            reflectiveCurveTo(17.52f, 2f, 12f, 2f)
+            moveTo(12f, 8f)
+            arcTo(4f, 4f, 0f, true, true, 12f, 16f)
+            arcTo(4f, 4f, 0f, true, true, 12f, 8f)
             close()
-            moveTo(13f, 17f)
-            horizontalLineTo(11f)
-            verticalLineTo(11f)
-            horizontalLineTo(13f)
-            close()
-            moveTo(13f, 9f)
-            horizontalLineTo(11f)
-            verticalLineTo(7f)
-            horizontalLineTo(13f)
-            close()
+            moveTo(11f, 2f); lineTo(13f, 2f); lineTo(13f, 6f); lineTo(11f, 6f); close()
+            moveTo(11f, 18f); lineTo(13f, 18f); lineTo(13f, 22f); lineTo(11f, 22f); close()
+            moveTo(2f, 11f); lineTo(6f, 11f); lineTo(6f, 13f); lineTo(2f, 13f); close()
+            moveTo(18f, 11f); lineTo(22f, 11f); lineTo(22f, 13f); lineTo(18f, 13f); close()
         }
     }.build()
 }
