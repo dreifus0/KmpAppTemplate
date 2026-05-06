@@ -5,7 +5,6 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class KmpComposeApplicationConventionPlugin : Plugin<Project> {
@@ -17,11 +16,7 @@ class KmpComposeApplicationConventionPlugin : Plugin<Project> {
             pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
 
             extensions.configure<KotlinMultiplatformExtension> {
-                androidTarget {
-                    compilerOptions {
-                        jvmTarget.set(JvmTarget.JVM_11)
-                    }
-                }
+                androidTarget()
                 iosArm64()
                 iosSimulatorArm64()
             }
