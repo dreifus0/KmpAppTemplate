@@ -1,110 +1,110 @@
 # KMP App Template
 
-Базовый KMP-шаблон для будущих проектов. Android + iOS из одной кодовой базы на Kotlin Multiplatform и Compose Multiplatform. Из коробки демонстрирует продакшен-патерны, которые мы используем поверх голого KMP: двухуровневую VM-архитектуру, MVU без domain-слоя, Metro DI, persisted preferences, реальную сеть, TDD на чистых функциях.
+A KMP starter we use as the baseline for new projects. Android + iOS from a single codebase on Kotlin Multiplatform and Compose Multiplatform. Out of the box it ships the production patterns we layer on top of vanilla KMP: a two-level ViewModel architecture, MVU without a domain layer, Metro DI, persisted preferences, real networking, and TDD on pure functions.
 
 ## Tech stack
 
-| Tech | Version | Зачем |
+| Tech | Version | Purpose |
 |---|---|---|
-| Kotlin | 2.3.0 | язык |
-| Compose Multiplatform | 1.10.0 | UI на Android + iOS |
-| Material3 | 1.10.0-alpha05 | дизайн-система |
-| Navigation 3 | 1.0.0-alpha06 | навигация (regular / dialog / bottom sheet) |
-| Metro DI | 0.10.2 | компайл-тайм DI без рефлексии |
-| MetroX ViewModel | 0.10.2 | мост Metro ↔ Compose ViewModel |
-| MVU Core | 0.3.0 | паттерн State / Event / Command / Effect |
-| Ktor Client | 3.4.0 | HTTP (OkHttp на Android, Darwin на iOS) |
-| Kotlin Serialization | 1.8.0 | JSON DTO |
+| Kotlin | 2.3.0 | language |
+| Compose Multiplatform | 1.10.0 | UI on Android + iOS |
+| Material3 | 1.10.0-alpha05 | design system |
+| Navigation 3 | 1.0.0-alpha06 | navigation (regular / dialog / bottom sheet) |
+| Metro DI | 0.10.2 | compile-time DI, no reflection |
+| MetroX ViewModel | 0.10.2 | bridge between Metro and Compose ViewModel |
+| MVU Core | 0.3.0 | State / Event / Command / Effect pattern |
+| Ktor Client | 3.4.0 | HTTP (OkHttp on Android, Darwin on iOS) |
+| Kotlin Serialization | 1.8.0 | JSON DTOs |
 | Multiplatform Settings | 1.2.0 | key/value persistence (SharedPreferences / NSUserDefaults) |
-| Coil 3 | 3.0.4 | загрузка картинок (через Ktor) |
-| Napier | 2.7.1 | KMP логирование, debug-only |
+| Coil 3 | 3.0.4 | image loading (over Ktor) |
+| Napier | 2.7.1 | KMP logging, debug-only |
 | Coroutines | 1.10.1 | async |
-| AGP / Gradle | 8.11.2 / 8.14.3 | сборка |
+| AGP / Gradle | 8.11.2 / 8.14.3 | build |
 
-## Что внутри
+## What's inside
 
-- **Onboarding → Root routing** через MVU верхнего уровня (`AppViewModel`), persisted флаг
-- **Pokémon list / detail** на реальном PokeAPI с `LceState` (Loading / Content / Error / Refreshing) и вложенной навигацией
-- **Settings**: переключатель темы (Light / Dark / System) и сброс онбординга — оба через единый source of truth (`ThemeRepository`, `OnboardingRepository`)
-- **Тесты на каждый Update** — pure-функции, без mock'ов
+- **Onboarding → Root routing** through a top-level MVU (`AppViewModel`) with a persisted flag
+- **Pokémon list / detail** against the real PokeAPI with `LceState` (Loading / Content / Error / Refreshing) and nested navigation
+- **Settings**: theme picker (Light / Dark / System) and onboarding reset — both go through a single source of truth (`ThemeRepository`, `OnboardingRepository`)
+- **A test next to every Update** — pure functions, no mocks
 
-## Архитектурная карта
+## Architecture map
 
 ```
 App(platformDeps)
-└── AppViewModel  (vanilla VM, единственная не через Metro)
+└── AppViewModel  (vanilla VM, the only one not wired through Metro)
     ├── createGraphFactory<AppGraph.Factory>().create(settings, isDebug, platformName, httpClient)
     ├── MVU: AppState{screen, themeMode}
     ├── observe themeRepository.themeMode  → AppEvent.ThemeModeChanged
     ├── observe onboardingRepository.onboardingReset → AppEvent.ShowOnboarding
-    └── routing по AppState.screen:
-        ├── Loading       → пустой Surface
+    └── routes by AppState.screen:
+        ├── Loading       → empty Surface
         ├── Onboarding    → OnboardingScreen → onComplete: AppEvent.OnboardingCompleted
         └── Root          → RootScreen
             └── RootViewModel  (Metro-injected)
-                └── табы:
+                └── tabs:
                     ├── Pokémon  → PokemonListScreen → nav → PokemonDetailScreen(name)
                     └── Settings → theme picker + reset onboarding
 ```
 
-## Структура модулей
+## Module layout
 
 ```
-composeApp/                            — Android-приложение и iOS-фреймворк
-  app/                                 — AppViewModel, MVU, routing верхнего уровня
+composeApp/                            — Android app and iOS framework
+  app/                                 — AppViewModel, MVU, top-level routing
   di/                                  — AppGraph + PlatformDependencies (expect/actual)
-  root/                                — RootViewModel (табы) + RootScreen
-  navigation/                          — табы (Pokémon / Settings)
+  root/                                — RootViewModel (tabs) + RootScreen
+  navigation/                          — tabs (Pokémon / Settings)
 
 modules/
 ├── data/
-│   └── pokemon/                       — PokeApi (Ktor), DTO, PokemonRepository
+│   └── pokemon/                       — PokeApi (Ktor), DTOs, PokemonRepository
 └── features/
-│   ├── onboarding/                    — MVU-онбординг, OnboardingRepository
+│   ├── onboarding/                    — MVU onboarding, OnboardingRepository
 │   ├── pokemon/                       — MVU list + detail
-│   └── settings/                      — ThemeRepository, ThemeMode, MVU-settings
+│   └── settings/                      — ThemeRepository, ThemeMode, MVU settings
 └── utils/
     ├── arch/                          — LceState + DI tokens (IsDebug, PlatformName)
     ├── core-extensions/               — Kotlin/Compose extensions
-    ├── core-navigation/               — NavController, экраны, табы
-    ├── helpers/                       — общие утилиты
+    ├── core-navigation/               — NavController, screens, tabs
+    ├── helpers/                       — shared utilities
     ├── network/                       — KmpHttpClient, ApiConfig, ApiError
-    └── uikit/                         — тема, типографика, формы
+    └── uikit/                         — theme, typography, shapes
 
 includedBuild/
-├── gradle-configs/                    — convention-плагины (kmp-library / kmp-compose-library / kmp-compose-application)
-└── shared-consts/                     — общие build-константы
+├── gradle-configs/                    — convention plugins (kmp-library / kmp-compose-library / kmp-compose-application)
+└── shared-consts/                     — shared build constants
 ```
 
-## Архитектура — 6 правил
+## Architecture in 6 rules
 
-1. **Двухуровневая VM**. `AppViewModel` создаёт DI-граф и рулит routing'ом верхнего уровня. Все остальные VM — через Metro: `@Inject @ContributesIntoMap(AppScope::class) @ViewModelKey(VM::class)`.
-2. **MVU без domain**. `State` / `Event` / `Command` / `Effect` — отдельные файлы. Бизнес-логика — в `commandhandlers/` рядом с VM. Никаких usecases.
-3. **Metro DI**. Repositories: `@Inject @SingleIn(AppScope::class)`. ViewModels через `metroViewModel<VM>()`.
-4. **PlatformDependencies через expect/actual** — единственный шов между общим кодом и платформой. На Android прокидывается `Context`, на iOS — пустой конструктор.
-5. **Repository = single source of truth**. `ThemeRepository` владеет темой целиком; `OnboardingRepository` — флагом онбординга. Никаких прямых записей в `Settings` мимо репо.
-6. **TDD на Update**. Update — чистая функция → элементарно тестируется без mock'ов. CommandHandler-тесты — приоритет 2.
+1. **Two-level ViewModels.** `AppViewModel` builds the DI graph and owns top-level routing. Every other VM goes through Metro: `@Inject @ContributesIntoMap(AppScope::class) @ViewModelKey(VM::class)`.
+2. **MVU, no domain layer.** `State` / `Event` / `Command` / `Effect` live in separate files. Business logic sits in `commandhandlers/` next to its VM. No use-cases.
+3. **Metro DI.** Repositories: `@Inject @SingleIn(AppScope::class)`. ViewModels via `metroViewModel<VM>()`.
+4. **PlatformDependencies via expect/actual** — the single seam between common code and the platform. Android takes `Context`, iOS uses an empty constructor.
+5. **Repository = single source of truth.** `ThemeRepository` owns theme end-to-end; `OnboardingRepository` owns the onboarding flag. Nothing writes to `Settings` directly bypassing a repo.
+6. **TDD on Update.** Update is a pure function → trivial to test without mocks. CommandHandler tests are priority 2.
 
-## Getting Started
+## Getting started
 
-Требуется JDK 17+, Android SDK 24+, Xcode 16+ для iOS.
+Requires JDK 17+, Android SDK 24+, Xcode 16+ for iOS.
 
 ```bash
 # Android (debug APK)
 ./gradlew :composeApp:assembleDebug
 
-# Проверить компиляцию обоих таргетов
+# Verify compilation on both targets
 ./gradlew :composeApp:compileDebugKotlinAndroid :composeApp:compileKotlinIosSimulatorArm64
 
-# Все тесты
+# Run all tests
 ./gradlew allTests
 
-# iOS — открыть iosApp/iosApp.xcodeproj в Xcode и запустить
+# iOS — open iosApp/iosApp.xcodeproj in Xcode and run
 ```
 
-## Как добавить feature-модуль
+## Adding a feature module
 
-1. **`settings.gradle.kts`** — добавить строку `":modules:features:<name>"` в `include(...)`.
+1. **`settings.gradle.kts`** — add `":modules:features:<name>"` to `include(...)`.
 2. **`modules/features/<name>/build.gradle.kts`**:
     ```kotlin
     plugins {
@@ -131,12 +131,12 @@ includedBuild/
         }
     }
     ```
-3. **Структура внутри**:
+3. **Inner layout**:
     ```
     src/commonMain/kotlin/com/dreifus/app/features/<name>/
-    ├── data/                          — Repository, API-клиенты, маппинг (опционально)
+    ├── data/                          — Repository, API clients, mapping (optional)
     └── presentation/
-        ├── <Name>State.kt             — отдельный файл
+        ├── <Name>State.kt             — one file each
         ├── <Name>Event.kt
         ├── <Name>Command.kt
         ├── <Name>Effect.kt
@@ -144,8 +144,8 @@ includedBuild/
         ├── <Name>ViewModel.kt         — Metro-injected
         ├── commandhandlers/
         └── ui/
-            ├── <Name>Screen.kt        — RegularScreen или RootScreenWithTabs
-            └── <Name>Content.kt       — pure composable от state + callback
+            ├── <Name>Screen.kt        — RegularScreen or RootScreenWithTabs
+            └── <Name>Content.kt       — pure composable taking state + callbacks
     src/commonTest/kotlin/.../<Name>UpdateTest.kt
     ```
 4. **`composeApp/build.gradle.kts`** — `implementation(projects.modules.features.<name>)`.
