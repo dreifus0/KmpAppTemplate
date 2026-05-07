@@ -16,7 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.dreifus.app.features.settings.data.ThemeMode
 import com.dreifus.app.features.settings.presentation.SettingsState
+import com.dreifus.template.uikit.button.AppButton
 import com.dreifus.template.uikit.style.AppTheme
+import kmptemplateapp.modules.features.settings.generated.resources.Res
+import kmptemplateapp.modules.features.settings.generated.resources.settings_onboarding_section
+import kmptemplateapp.modules.features.settings.generated.resources.settings_reset_onboarding
+import kmptemplateapp.modules.features.settings.generated.resources.settings_theme_dark
+import kmptemplateapp.modules.features.settings.generated.resources.settings_theme_light
+import kmptemplateapp.modules.features.settings.generated.resources.settings_theme_section
+import kmptemplateapp.modules.features.settings.generated.resources.settings_theme_system
+import org.jetbrains.compose.resources.StringResource
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun SettingsContent(
@@ -30,7 +40,7 @@ fun SettingsContent(
             .padding(horizontal = 24.dp, vertical = 32.dp),
     ) {
         Text(
-            text = "Theme",
+            text = stringResource(Res.string.settings_theme_section),
             style = AppTheme.typography.headlineMedium,
             color = AppTheme.colors.contentPrimary,
         )
@@ -43,17 +53,16 @@ fun SettingsContent(
         Spacer(modifier = Modifier.height(48.dp))
 
         Text(
-            text = "Onboarding",
+            text = stringResource(Res.string.settings_onboarding_section),
             style = AppTheme.typography.headlineMedium,
             color = AppTheme.colors.contentPrimary,
         )
-        Spacer(modifier = Modifier.height(12.dp))
-        Button(
+        Spacer(12.dp)
+        AppButton(
+            text = stringResource(Res.string.settings_reset_onboarding),
             onClick = onResetOnboarding,
             modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text("Reset onboarding")
-        }
+        )
     }
 }
 
@@ -73,23 +82,23 @@ private fun ThemePicker(
                     onClick = { onSelect(mode) },
                     modifier = Modifier.weight(1f),
                 ) {
-                    Text(mode.label)
+                    Text(stringResource(mode.labelRes))
                 }
             } else {
                 OutlinedButton(
                     onClick = { onSelect(mode) },
                     modifier = Modifier.weight(1f),
                 ) {
-                    Text(mode.label)
+                    Text(stringResource(mode.labelRes))
                 }
             }
         }
     }
 }
 
-private val ThemeMode.label: String
+private val ThemeMode.labelRes: StringResource
     get() = when (this) {
-        ThemeMode.Light -> "Light"
-        ThemeMode.Dark -> "Dark"
-        ThemeMode.System -> "System"
+        ThemeMode.Light -> Res.string.settings_theme_light
+        ThemeMode.Dark -> Res.string.settings_theme_dark
+        ThemeMode.System -> Res.string.settings_theme_system
     }

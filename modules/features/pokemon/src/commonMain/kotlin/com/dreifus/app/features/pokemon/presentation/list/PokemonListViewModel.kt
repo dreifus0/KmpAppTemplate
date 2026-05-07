@@ -3,6 +3,7 @@ package com.dreifus.app.features.pokemon.presentation.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dreifus.app.data.pokemon.PokemonRepository
+import com.dreifus.app.features.pokemon.presentation.list.commandhandlers.filterPokemonListHandler
 import com.dreifus.app.features.pokemon.presentation.list.commandhandlers.loadPokemonListHandler
 import com.yavorcool.mvucore.impl.Store
 import dev.zacsweers.metro.AppScope
@@ -22,6 +23,7 @@ class PokemonListViewModel(
         update = PokemonListUpdate(),
         commandHandlers = listOf(
             loadPokemonListHandler(repo),
+            filterPokemonListHandler(),
         ),
     )
 

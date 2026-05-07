@@ -8,4 +8,6 @@ sealed interface PokemonListEvent {
     data class ItemClicked(val name: String) : PokemonListEvent
     data class ListLoaded(val items: List<PokemonListItem>) : PokemonListEvent
     data class LoadFailed(val error: Throwable) : PokemonListEvent
+    data class SearchQueryChanged(val query: String) : PokemonListEvent
+    data class FilteredListReady(val items: List<PokemonListItem>) : PokemonListEvent
 }

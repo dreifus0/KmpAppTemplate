@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +20,15 @@ import coil3.compose.AsyncImage
 import com.dreifus.app.data.pokemon.PokemonDetail
 import com.dreifus.app.features.pokemon.presentation.detail.PokemonDetailState
 import com.dreifus.arch.lce.LceState
+import com.dreifus.template.uikit.button.AppButton
 import com.dreifus.template.uikit.style.AppTheme
+import kmptemplateapp.modules.features.pokemon.generated.resources.Res
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_detail_error_title
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_detail_height
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_detail_weight
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_error_unknown
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_retry
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PokemonDetailContent(
@@ -76,8 +83,14 @@ private fun DetailBody(detail: PokemonDetail) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
         ) {
-            StatBlock(label = "Height", value = "${detail.heightDecimeters / 10.0} m")
-            StatBlock(label = "Weight", value = "${detail.weightHectograms / 10.0} kg")
+            StatBlock(
+                label = stringResource(Res.string.pokemon_detail_height),
+                value = "${detail.heightDecimeters / 10.0} m"
+            )
+            StatBlock(
+                label = stringResource(Res.string.pokemon_detail_weight),
+                value = "${detail.weightHectograms / 10.0} kg"
+            )
         }
     }
 }
@@ -113,19 +126,17 @@ private fun ErrorBody(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Couldn't load $fallbackName",
+            text = stringResource(Res.string.pokemon_detail_error_title, fallbackName),
             style = AppTheme.typography.headlineMedium,
             color = AppTheme.colors.contentPrimary,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = error?.message ?: "Unknown error",
+            text = error?.message ?: stringResource(Res.string.pokemon_error_unknown),
             style = AppTheme.typography.bodyMedium,
             color = AppTheme.colors.contentSecondary,
         )
         Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = onRetry) {
-            Text("Retry")
-        }
+        AppButton(text = stringResource(Res.string.pokemon_retry), onClick = onRetry)
     }
 }

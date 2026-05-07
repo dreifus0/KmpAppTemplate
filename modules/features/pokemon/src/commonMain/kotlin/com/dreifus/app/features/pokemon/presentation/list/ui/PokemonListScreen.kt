@@ -32,6 +32,7 @@ class PokemonListScreen : RootScreenWithTabs {
             state = state,
             onItemClick = { name -> viewModel.dispatch(PokemonListEvent.ItemClicked(name)) },
             onRefresh = { viewModel.dispatch(PokemonListEvent.Refresh) },
+            onSearchQueryChanged = { query -> viewModel.dispatch(PokemonListEvent.SearchQueryChanged(query)) },
         )
     }
 }

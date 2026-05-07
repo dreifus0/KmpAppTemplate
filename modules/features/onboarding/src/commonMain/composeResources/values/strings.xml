@@ -1,0 +1,8 @@
+<resources>
+    <string name="onboarding_welcome_title">Welcome</string>
+    <string name="onboarding_welcome_description">A KMP + Compose template with MVU, Metro DI and a two-level ViewModel architecture.</string>
+    <string name="onboarding_welcome_continue">Continue</string>
+    <string name="onboarding_done_title">You\'re all set</string>
+    <string name="onboarding_done_description">Tap below to start exploring the sample.</string>
+    <string name="onboarding_done_get_started">Get started</string>
+</resources>

@@ -1,0 +1,9 @@
+<resources>
+    <string name="pokemon_search_hint">Search</string>
+    <string name="pokemon_list_error_title">Failed to load Pokémon</string>
+    <string name="pokemon_error_unknown">Unknown error</string>
+    <string name="pokemon_retry">Retry</string>
+    <string name="pokemon_detail_height">Height</string>
+    <string name="pokemon_detail_weight">Weight</string>
+    <string name="pokemon_detail_error_title">Couldn\'t load %1$s</string>
+</resources>

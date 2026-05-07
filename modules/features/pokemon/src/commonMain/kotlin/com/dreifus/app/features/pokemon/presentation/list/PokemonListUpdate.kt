@@ -30,11 +30,28 @@ class PokemonListUpdate : Update<PokemonListState, PokemonListEvent, PokemonList
         )
 
         is PokemonListEvent.ListLoaded -> Next(
-            state = state.copy(items = LceState.Content(event.items)),
+            state = state.copy(allItems = event.items),
+            command = PokemonListCommand.FilterList(state.searchQuery, event.items),
         )
 
         is PokemonListEvent.LoadFailed -> Next(
             state = state.copy(items = LceState.Error(event.error)),
+        )
+
+        is PokemonListEvent.SearchQueryChanged -> {
+            val newState = state.copy(searchQuery = event.query)
+            if (state.items is LceState.Content) {
+                Next(
+                    state = newState,
+                    command = PokemonListCommand.FilterList(event.query, state.allItems),
+                )
+            } else {
+                Next(newState)
+            }
+        }
+
+        is PokemonListEvent.FilteredListReady -> Next(
+            state = state.copy(items = LceState.Content(event.items)),
         )
     }
 }

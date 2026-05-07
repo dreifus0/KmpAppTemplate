@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -26,13 +26,24 @@ import com.dreifus.app.data.pokemon.PokemonListItem
 import com.dreifus.app.features.pokemon.presentation.list.PokemonListState
 import com.dreifus.arch.lce.LceState
 import com.dreifus.arch.lce.isRefreshing
+import com.dreifus.template.uikit.button.AppButton
+import com.dreifus.template.uikit.icon.Search24
+import com.dreifus.template.uikit.style.AppIcons
 import com.dreifus.template.uikit.style.AppTheme
+import com.dreifus.template.uikit.textField.AppTextField
+import kmptemplateapp.modules.features.pokemon.generated.resources.Res
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_error_unknown
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_list_error_title
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_retry
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_search_hint
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun PokemonListContent(
     state: PokemonListState,
     onItemClick: (String) -> Unit,
     onRefresh: () -> Unit,
+    onSearchQueryChanged: (String) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         if (state.items.isRefreshing) {
@@ -44,6 +55,8 @@ fun PokemonListContent(
 
             is LceState.Content -> PokemonList(
                 items = items.value,
+                searchQuery = state.searchQuery,
+                onSearchQueryChanged = onSearchQueryChanged,
                 onItemClick = onItemClick,
             )
 
@@ -58,12 +71,25 @@ fun PokemonListContent(
 @Composable
 private fun PokemonList(
     items: List<PokemonListItem>,
+    searchQuery: String,
+    onSearchQueryChanged: (String) -> Unit,
     onItemClick: (String) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = 8.dp),
+        contentPadding = PaddingValues(vertical = 8.dp),
     ) {
+        item {
+            AppTextField(
+                value = searchQuery,
+                onValueChange = onSearchQueryChanged,
+                labelText = stringResource(Res.string.pokemon_search_hint),
+                leadingIcon = AppIcons.Search24,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+            )
+        }
         items(items, key = { it.id }) { item ->
             PokemonRow(item = item, onClick = { onItemClick(item.name) })
         }
@@ -116,19 +142,17 @@ private fun ErrorPlaceholder(error: Throwable?, onRetry: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Failed to load Pokémon",
+            text = stringResource(Res.string.pokemon_list_error_title),
             style = AppTheme.typography.headlineMedium,
             color = AppTheme.colors.contentPrimary,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = error?.message ?: "Unknown error",
+            text = error?.message ?: stringResource(Res.string.pokemon_error_unknown),
             style = AppTheme.typography.bodyMedium,
             color = AppTheme.colors.contentSecondary,
         )
         Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = onRetry) {
-            Text("Retry")
-        }
+        AppButton(text = stringResource(Res.string.pokemon_retry), onClick = onRetry)
     }
 }
