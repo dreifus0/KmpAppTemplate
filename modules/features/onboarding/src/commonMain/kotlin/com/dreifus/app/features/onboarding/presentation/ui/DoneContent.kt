@@ -11,8 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dreifus.template.uikit.button.AppButton
+import com.dreifus.template.uikit.preview.AppPreview
 import com.dreifus.template.uikit.style.AppTheme
 import kmptemplateapp.modules.features.onboarding.generated.resources.Res
 import kmptemplateapp.modules.features.onboarding.generated.resources.onboarding_done_description
@@ -43,5 +45,13 @@ fun DoneContent(onFinish: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(48.dp))
         AppButton(text = stringResource(Res.string.onboarding_done_get_started), onClick = onFinish)
+    }
+}
+
+@Preview
+@Composable
+private fun DoneContentPreview() {
+    AppPreview {
+        DoneContent(onFinish = {})
     }
 }

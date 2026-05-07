@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,11 +21,15 @@ import coil3.compose.AsyncImage
 import com.dreifus.app.data.pokemon.PokemonDetail
 import com.dreifus.app.features.pokemon.presentation.detail.PokemonDetailState
 import com.dreifus.arch.lce.LceState
+import com.dreifus.navigation.ui.toolbar.ShevronBackToolbar
 import com.dreifus.template.uikit.button.AppButton
+import com.dreifus.template.uikit.preview.AppPreview
 import com.dreifus.template.uikit.style.AppTheme
+import androidx.compose.ui.tooling.preview.Preview
 import kmptemplateapp.modules.features.pokemon.generated.resources.Res
 import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_detail_error_title
 import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_detail_height
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_detail_title
 import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_detail_weight
 import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_error_unknown
 import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_retry
@@ -36,19 +41,30 @@ fun PokemonDetailContent(
     fallbackName: String,
     onRetry: () -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        when (val detail = state.detail) {
-            is LceState.Loading -> CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center),
-            )
+    Scaffold(
+        containerColor = AppTheme.colors.backgroundBase,
+        topBar = {
+            ShevronBackToolbar(title = stringResource(Res.string.pokemon_detail_title))
+        },
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+        ) {
+            when (val detail = state.detail) {
+                is LceState.Loading -> CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                )
 
-            is LceState.Content -> DetailBody(detail = detail.value)
+                is LceState.Content -> DetailBody(detail = detail.value)
 
-            is LceState.Error -> ErrorBody(
-                fallbackName = fallbackName,
-                error = detail.error,
-                onRetry = onRetry,
-            )
+                is LceState.Error -> ErrorBody(
+                    fallbackName = fallbackName,
+                    error = detail.error,
+                    onRetry = onRetry,
+                )
+            }
         }
     }
 }
@@ -138,5 +154,56 @@ private fun ErrorBody(
         )
         Spacer(modifier = Modifier.height(24.dp))
         AppButton(text = stringResource(Res.string.pokemon_retry), onClick = onRetry)
+    }
+}
+
+private val previewDetail = PokemonDetail(
+    id = 1,
+    name = "bulbasaur",
+    heightDecimeters = 7,
+    weightHectograms = 69,
+    imageUrl = null,
+    types = listOf("grass", "poison"),
+)
+
+@Preview
+@Composable
+private fun PokemonDetailLoadingPreview() {
+    AppPreview {
+        PokemonDetailContent(
+            state = PokemonDetailState(),
+            fallbackName = "bulbasaur",
+            onRetry = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PokemonDetailContentPreview() {
+    AppPreview {
+        PokemonDetailContent(
+            state = PokemonDetailState(
+                name = "bulbasaur",
+                detail = LceState.Content(previewDetail),
+            ),
+            fallbackName = "bulbasaur",
+            onRetry = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PokemonDetailErrorPreview() {
+    AppPreview {
+        PokemonDetailContent(
+            state = PokemonDetailState(
+                name = "bulbasaur",
+                detail = LceState.Error(RuntimeException("Not found")),
+            ),
+            fallbackName = "bulbasaur",
+            onRetry = {},
+        )
     }
 }

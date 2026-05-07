@@ -1,5 +1,6 @@
 package com.dreifus.app.features.pokemon.presentation.list.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,10 +17,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.dreifus.app.data.pokemon.PokemonListItem
@@ -28,12 +32,16 @@ import com.dreifus.arch.lce.LceState
 import com.dreifus.arch.lce.isRefreshing
 import com.dreifus.template.uikit.button.AppButton
 import com.dreifus.template.uikit.icon.Search24
+import com.dreifus.template.uikit.preview.AppPreview
 import com.dreifus.template.uikit.style.AppIcons
+import com.dreifus.template.uikit.style.AppShapes
 import com.dreifus.template.uikit.style.AppTheme
 import com.dreifus.template.uikit.textField.AppTextField
+import com.dreifus.template.uikit.toolbar.AppToolbar
 import kmptemplateapp.modules.features.pokemon.generated.resources.Res
 import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_error_unknown
 import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_list_error_title
+import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_list_title
 import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_retry
 import kmptemplateapp.modules.features.pokemon.generated.resources.pokemon_search_hint
 import org.jetbrains.compose.resources.stringResource
@@ -45,25 +53,39 @@ fun PokemonListContent(
     onRefresh: () -> Unit,
     onSearchQueryChanged: (String) -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        if (state.items.isRefreshing) {
-            LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-        }
-
-        when (val items = state.items) {
-            is LceState.Loading -> LoadingPlaceholder()
-
-            is LceState.Content -> PokemonList(
-                items = items.value,
-                searchQuery = state.searchQuery,
-                onSearchQueryChanged = onSearchQueryChanged,
-                onItemClick = onItemClick,
+    Scaffold(
+        containerColor = AppTheme.colors.backgroundBase,
+        topBar = {
+            AppToolbar(
+                title = stringResource(Res.string.pokemon_list_title),
+                button = null,
             )
+        },
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+        ) {
+            if (state.items.isRefreshing) {
+                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+            }
 
-            is LceState.Error -> ErrorPlaceholder(
-                error = items.error,
-                onRetry = onRefresh,
-            )
+            when (val items = state.items) {
+                is LceState.Loading -> LoadingPlaceholder()
+
+                is LceState.Content -> PokemonList(
+                    items = items.value,
+                    searchQuery = state.searchQuery,
+                    onSearchQueryChanged = onSearchQueryChanged,
+                    onItemClick = onItemClick,
+                )
+
+                is LceState.Error -> ErrorPlaceholder(
+                    error = items.error,
+                    onRetry = onRefresh,
+                )
+            }
         }
     }
 }
@@ -77,7 +99,7 @@ private fun PokemonList(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(vertical = 8.dp),
+        contentPadding = PaddingValues(bottom = 16.dp),
     ) {
         item {
             AppTextField(
@@ -104,6 +126,9 @@ private fun PokemonRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .clip(AppShapes.card)
+            .background(AppTheme.colors.backgroundSecondary)
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -154,5 +179,57 @@ private fun ErrorPlaceholder(error: Throwable?, onRetry: () -> Unit) {
         )
         Spacer(modifier = Modifier.height(24.dp))
         AppButton(text = stringResource(Res.string.pokemon_retry), onClick = onRetry)
+    }
+}
+
+private val previewItems = listOf(
+    PokemonListItem(id = 1, name = "bulbasaur", imageUrl = ""),
+    PokemonListItem(id = 2, name = "charmander", imageUrl = ""),
+    PokemonListItem(id = 3, name = "squirtle", imageUrl = ""),
+    PokemonListItem(id = 4, name = "pikachu", imageUrl = ""),
+    PokemonListItem(id = 5, name = "mewtwo", imageUrl = ""),
+)
+
+@Preview
+@Composable
+private fun PokemonListLoadingPreview() {
+    AppPreview {
+        PokemonListContent(
+            state = PokemonListState(),
+            onItemClick = {},
+            onRefresh = {},
+            onSearchQueryChanged = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PokemonListContentPreview() {
+    AppPreview {
+        PokemonListContent(
+            state = PokemonListState(
+                allItems = previewItems,
+                items = LceState.Content(previewItems),
+            ),
+            onItemClick = {},
+            onRefresh = {},
+            onSearchQueryChanged = {},
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun PokemonListErrorPreview() {
+    AppPreview {
+        PokemonListContent(
+            state = PokemonListState(
+                items = LceState.Error(RuntimeException("Network error")),
+            ),
+            onItemClick = {},
+            onRefresh = {},
+            onSearchQueryChanged = {},
+        )
     }
 }

@@ -11,8 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.dreifus.template.uikit.button.AppButton
+import com.dreifus.template.uikit.preview.AppPreview
 import com.dreifus.template.uikit.style.AppTheme
 import kmptemplateapp.modules.features.onboarding.generated.resources.Res
 import kmptemplateapp.modules.features.onboarding.generated.resources.onboarding_welcome_continue
@@ -46,5 +48,13 @@ fun WelcomeContent(onContinue: () -> Unit) {
             text = stringResource(Res.string.onboarding_welcome_continue),
             onClick = onContinue,
         )
+    }
+}
+
+@Preview
+@Composable
+private fun WelcomeContentPreview() {
+    AppPreview {
+        WelcomeContent(onContinue = {})
     }
 }
